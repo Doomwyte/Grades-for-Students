@@ -27,35 +27,41 @@ public final class R {
         public static final int Yellow=0x7f040005;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int icon=0x7f020001;
-        public static final int icon_course_tab=0x7f020002;
+        public static final int custom_shape_bottom=0x7f020000;
+        public static final int custom_shape_top=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int icon=0x7f020003;
+        public static final int icon_course_tab=0x7f020004;
     }
     public static final class id {
-        public static final int MainMenuButton1=0x7f07000d;
-        public static final int MainMenuButton2=0x7f07000e;
-        public static final int MainMenuButton3=0x7f070011;
-        public static final int MainMenuButton4=0x7f070012;
-        public static final int MainMenuButton5=0x7f070015;
-        public static final int MainMenuButton6=0x7f070016;
-        public static final int MainMenuButtonLabel1=0x7f07000f;
-        public static final int MainMenuButtonLabel2=0x7f070010;
-        public static final int MainMenuButtonLabel3=0x7f070013;
-        public static final int MainMenuButtonLabel4=0x7f070014;
-        public static final int MainMenuButtonLabel5=0x7f070017;
-        public static final int MainMenuButtonLabel6=0x7f070018;
+        public static final int MainMenuButton1=0x7f070010;
+        public static final int MainMenuButton2=0x7f070011;
+        public static final int MainMenuButton3=0x7f070014;
+        public static final int MainMenuButton4=0x7f070015;
+        public static final int MainMenuButton5=0x7f070018;
+        public static final int MainMenuButton6=0x7f070019;
+        public static final int MainMenuButtonLabel1=0x7f070012;
+        public static final int MainMenuButtonLabel2=0x7f070013;
+        public static final int MainMenuButtonLabel3=0x7f070016;
+        public static final int MainMenuButtonLabel4=0x7f070017;
+        public static final int MainMenuButtonLabel5=0x7f07001a;
+        public static final int MainMenuButtonLabel6=0x7f07001b;
         public static final int RelativeLayoutRoot=0x7f070000;
         public static final int SetupContent=0x7f070001;
         public static final int SetupFooter=0x7f070002;
-        public static final int addMore=0x7f070009;
-        public static final int button1=0x7f070019;
-        public static final int categorySpinner=0x7f070008;
-        public static final int courseSpinner=0x7f070007;
-        public static final int enterGradeSpinners=0x7f070006;
+        public static final int addMore=0x7f07000c;
+        public static final int boxTop1=0x7f070006;
+        public static final int boxTop2=0x7f07000a;
+        public static final int button1=0x7f07001d;
+        public static final int categorySpinner=0x7f070009;
+        public static final int courseSpinner=0x7f070008;
+        public static final int enterGradeSpinners=0x7f070007;
         public static final int enterGradesRoot=0x7f070005;
-        public static final int gradesInput=0x7f07000c;
-        public static final int gradesLabel=0x7f07000b;
-        public static final int gradesTable=0x7f07000a;
+        public static final int gradesContent=0x7f07000b;
+        public static final int gradesInput=0x7f07000f;
+        public static final int gradesLabel=0x7f07000e;
+        public static final int gradesTable=0x7f07000d;
+        public static final int myText1=0x7f07001c;
         public static final int next=0x7f070004;
         public static final int setupTextTitle=0x7f070003;
     }

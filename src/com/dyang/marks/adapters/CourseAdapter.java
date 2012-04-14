@@ -2,6 +2,7 @@ package com.dyang.marks.adapters;
 
 import java.util.List;
 
+import com.dyang.marks.R;
 import com.dyang.marks.courseObj.CourseObj;
 
 import android.content.Context;
@@ -33,7 +34,6 @@ public class CourseAdapter extends ArrayAdapter<CourseObj> {
 		CourseObj item = courseItems.get(position);
 		TextView tv = (TextView) v.findViewById(android.R.id.text1);
 		tv.setText(item.getName() + " (" + item.getCode() + ")");
-		v.bringToFront();
 		return v;
 	}
 

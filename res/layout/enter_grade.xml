@@ -3,8 +3,19 @@
     android:id="@+id/enterGradesRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dip" >
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/boxTop1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dip" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15dip" >
+        </TextView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/enterGradeSpinners"
@@ -23,12 +34,29 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <include layout="@layout/grades_row" />
-
-    <Button
-        android:id="@+id/addMore"
+    <LinearLayout
+        android:id="@+id/boxTop2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/addMore" />
+        android:layout_marginTop="1dip" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15dip" >
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/gradesContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/addMore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/addMore" />
+    </LinearLayout>
 
 </LinearLayout>
