@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:weightSum="1.0" >
+
+        <ImageView
+            android:id="@+id/MainMenuButton1"
+            android:layout_width="0dip"
+            android:layout_height="100dip"
+            android:layout_weight="0.5"
+            android:src="@drawable/icon" />
+
+        <ImageView
+            android:id="@+id/MainMenuButton2"
+            android:layout_width="0dip"
+            android:layout_height="100dip"
+            android:layout_weight="0.5"
+            android:src="@drawable/icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:weightSum="1.0" >
+
+        <TextView
+            android:id="@+id/MainMenuButtonLabel1"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/enterGrades" />
+
+        <TextView
+            android:id="@+id/MainMenuButtonLabel2"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/university" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="20dip"
+        android:weightSum="1.0" >
+
+        <ImageView
+            android:id="@+id/MainMenuButton3"
+            android:layout_width="0dip"
+            android:layout_height="100dip"
+            android:layout_marginTop="20dip"
+            android:layout_weight="0.5"
+            android:src="@drawable/icon" />
+
+        <ImageView
+            android:id="@+id/MainMenuButton4"
+            android:layout_width="0dip"
+            android:layout_height="100dip"
+            android:layout_marginTop="20dip"
+            android:layout_weight="0.5"
+            android:src="@drawable/icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:weightSum="1.0" >
+
+        <TextView
+            android:id="@+id/MainMenuButtonLabel3"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/university" />
+
+        <TextView
+            android:id="@+id/MainMenuButtonLabel4"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/university" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="20dip"
+        android:weightSum="1.0" >
+
+        <ImageView
+            android:id="@+id/MainMenuButton5"
+            android:layout_width="0dip"
+            android:layout_height="100dip"
+            android:layout_marginTop="20dip"
+            android:layout_weight="0.5"
+            android:src="@drawable/icon" />
+
+        <ImageView
+            android:id="@+id/MainMenuButton6"
+            android:layout_width="0dip"
+            android:layout_height="100dip"
+            android:layout_marginTop="20dip"
+            android:layout_weight="0.5"
+            android:src="@drawable/icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:weightSum="1.0" >
+
+        <TextView
+            android:id="@+id/MainMenuButtonLabel5"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/university" />
+
+        <TextView
+            android:id="@+id/MainMenuButtonLabel6"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="@string/university" />
+    </LinearLayout>
+
+</LinearLayout>

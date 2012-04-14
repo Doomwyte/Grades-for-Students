@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="welcome">Welcome</string>
+    <string name="app_name">Grades for Students</string>
+    <string name="clickToContinue">Click to Continue</string>
+    <string name="name">What is Your Name?</string>
+    <string name="course">Course</string>
+    <string name="courseName">Course Name</string>
+    <string name="courseCode">Course Code</string>
+    <string name="courseCategories">Course Breakdown</string>
+    <string name="countGPA">Count in GPA?</string>
+    <string name="setupName">Name</string>
+    <string name="setupCourses">Courses</string>
+    <string name="educationLevel">Your Education Level</string>
+    <string name="highSchool">High School</string>
+    <string name="university">University</string>
+    <string name="next">Next</string>
+    <string name="complete">Complete</string>
+    <string name="addMoreCourses">Add More Courses</string>
+    <string name="universitycollege">University/College</string>
+    <string name="addRow">Add More Courses</string>
+    <string name="enterCourses">Enter Your Course Codes</string>
+    <string name="courseList">Inputted Courses:</string>
+    <string name="setupComplete">Setup Complete</string>
+    <string name="assignments">Assignments</string>
+    <string name="midterms">Midterm Exam</string>
+    <string name="finals">Final Exam</string>
+    <string name="labs">Labs</string>
+    <string name="weighting">Weighting (%)</string>
+    <string name="thirtypercent">ie. 30</string>
+    <string name="enterGrades">Enter Grades</string>
+    <string name="grades">Grades</string>
+
+</resources>
