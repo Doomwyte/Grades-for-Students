@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/enterGradesRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="20dip" >
 
     <LinearLayout
@@ -21,28 +23,12 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/gradesTable"
+    <include layout="@layout/grades_row" />
+
+    <Button
+        android:id="@+id/addMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/enterGradeSpinners"
-        android:weightSum="2"
-        android:paddingTop="30dip" >
+        android:text="@string/addMore" />
 
-        <TextView
-            android:id="@+id/gradesLabel"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-        </TextView>
-
-        <EditText
-            android:id="@+id/gradesInput"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text" >
-        </EditText>
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

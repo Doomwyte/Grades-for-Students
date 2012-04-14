@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -64,6 +65,16 @@ public class EnterCategories extends Activity {
 		courseCategory3Input = new EditText(this);
 		courseCategory4Input = new EditText(this);
 
+		courseCategory1Input.setSingleLine();
+		courseCategory2Input.setSingleLine();
+		courseCategory3Input.setSingleLine();
+		courseCategory4Input.setSingleLine();
+
+		courseCategory1Input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		courseCategory2Input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		courseCategory3Input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		courseCategory4Input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
 		courseCategory1Weighting = new EditText(this);
 		courseCategory2Weighting = new EditText(this);
 		courseCategory3Weighting = new EditText(this);
@@ -77,6 +88,11 @@ public class EnterCategories extends Activity {
 		courseCategory2Weighting.setHint(R.string.thirtypercent);
 		courseCategory3Weighting.setHint(R.string.thirtypercent);
 		courseCategory4Weighting.setHint(R.string.thirtypercent);
+
+		courseCategory1Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
+		courseCategory2Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
+		courseCategory3Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
+		courseCategory4Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
 
 		TextView courseCategories = new TextView(this);
 		courseCategories.setText(R.string.courseCategories);
@@ -142,7 +158,8 @@ public class EnterCategories extends Activity {
 		addMoreCourses.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
-				insertCategoryInfo();
+				insertInfo();
+				parentActivity.reload();
 			}
 
 		});
@@ -150,7 +167,7 @@ public class EnterCategories extends Activity {
 		next.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View arg0) {
-				if (insertCategoryInfo() == 0)
+				if (insertInfo() == 0)
 					complete();
 			}
 
@@ -158,9 +175,10 @@ public class EnterCategories extends Activity {
 
 	}
 
-	public int insertCategoryInfo() {
+	public int insertInfo() {
 
 		DatabaseHandler db = new DatabaseHandler(this);
+
 		CourseObj courseObj = parentActivity.getCourseObj();
 		db.addCourse(courseObj);
 
@@ -242,6 +260,7 @@ public class EnterCategories extends Activity {
 	}
 
 	public void complete() {
+		parentActivity.finish();
 		Intent myIntent = new Intent(EnterCategories.this, MainMenuActivity.class);
 		EnterCategories.this.startActivity(myIntent);
 	}

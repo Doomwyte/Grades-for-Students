@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,25 +44,25 @@ public class EnterCourses extends Activity {
 	public void inputCourseSettings() {
 		setupContent.removeAllViews();
 
-		parentActivity = (CourseTabLayoutActivity) EnterCourses.this.getParent();
+		parentActivity = (CourseTabLayoutActivity) getParent();
 
 		dipValue = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, resources.getDisplayMetrics());
-
-		DatabaseHandler dh = new DatabaseHandler(this);
-		dh.deleteAllCourses();
-		dh.close();
 
 		TextView courseName = new TextView(this);
 		courseName.setText(R.string.courseName);
 		courseName.setTextSize(dipValue);
 		courseName.setTextColor(Color.BLACK);
 		courseNameInput = new EditText(this);
+		courseNameInput.setSingleLine();
+		courseNameInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
 		TextView courseCode = new TextView(this);
 		courseCode.setText(R.string.courseCode);
 		courseCode.setTextSize(dipValue);
 		courseCode.setTextColor(Color.BLACK);
 		courseCodeInput = new EditText(this);
+		courseCodeInput.setSingleLine();
+		courseCodeInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
 		TextView countGPA = new TextView(this);
 		countGPA.setText(R.string.countGPA);
@@ -125,10 +126,7 @@ public class EnterCourses extends Activity {
 
 	}
 
-	public int setCourseInfo(int id) {
-		if (parentActivity.isInserted())
-			return 0;
-
+	public void setCourseInfo(int id) {
 		DatabaseHandler db = new DatabaseHandler(this);
 
 		// If id==0, means adding NEW course
@@ -137,20 +135,16 @@ public class EnterCourses extends Activity {
 			id = db.getCoursesCount() + 1;
 
 		// Sending course object to tab host
-		CourseObj courseObj = new CourseObj(id, courseNameInput.getText().toString().toUpperCase(), courseCodeInput
+		CourseObj courseObj = new CourseObj(id, courseNameInput.getText().toString(), courseCodeInput
 				.getText().toString().toUpperCase(), new Boolean(countGPABox.isSelected()).toString());
 		parentActivity.setCourseObj(courseObj);
 
-		// Resetting Input Boxes
-		courseNameInput.setText("");
-		courseCodeInput.setText("");
-		countGPABox.setSelected(true);
-		courseNameInput.requestFocus();
-		parentActivity.setInserted(true);
-
 		db.close();
+	}
 
-		return 0;
+	public void reload() {
+		startActivity(getIntent());
+		finish();
 	}
 
 }

@@ -2,6 +2,7 @@ package com.dyang.marks;
 
 import com.dyang.marks.courseObj.CourseObj;
 
+import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,16 +12,16 @@ import android.widget.TabHost.TabSpec;
 public class CourseTabLayoutActivity extends TabActivity {
 
 	public TabHost tabHost;
-	private boolean inserted;
 	public CourseObj courseObj;
+	public static Activity parentActivity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_tabhost);
+		parentActivity = this;
 
 		tabHost = getTabHost();
-		setInserted(false);
 
 		// Tab for Photos
 		TabSpec coursespec = tabHost.newTabSpec("General");
@@ -38,27 +39,24 @@ public class CourseTabLayoutActivity extends TabActivity {
 		// Adding all TabSpec to TabHost
 		tabHost.addTab(coursespec); // Adding course tab
 		tabHost.addTab(categoryspec); // Adding category tab
-		
+
 	}
 
 	public void switchTab(int tab) {
 		tabHost.setCurrentTab(tab);
 	}
-	
-	public void setCourseObj(CourseObj courseObj){
+
+	public void setCourseObj(CourseObj courseObj) {
 		this.courseObj = courseObj;
 	}
-	
-	public CourseObj getCourseObj(){
+
+	public CourseObj getCourseObj() {
 		return courseObj;
 	}
 
-	public void setInserted(boolean inserted) {
-		this.inserted = inserted;
-	}
-
-	public boolean isInserted() {
-		return inserted;
+	public void reload() {
+		startActivity(getIntent());
+		finish();
 	}
 
 }
