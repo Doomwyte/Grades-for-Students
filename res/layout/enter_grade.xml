@@ -1,62 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/enterGradesRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/boxTop1"
+        android:id="@+id/spinnerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dip" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="15dip" >
-        </TextView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/enterGradeSpinners"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:orientation="vertical" >
 
-        <Spinner
-            android:id="@+id/courseSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include
+            android:id="@+id/spinnerLabel"
+            layout="@layout/top_bracket" />
 
-        <Spinner
-            android:id="@+id/categorySpinner"
+        <LinearLayout
+            android:id="@+id/enterGradeSpinners"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_shape_bottom"
+            android:orientation="vertical" >
+
+            <Spinner
+                android:id="@+id/courseSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/boxTop2"
+        android:id="@+id/gradesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dip" >
+        android:layout_above="@+id/gradesComplete"
+        android:layout_below="@+id/spinnerLayout"
+        android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="15dip" >
-        </TextView>
+        <include
+            android:id="@+id/gradesContentLabel"
+            layout="@layout/top_bracket" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:fadeScrollbars="false" >
+
+            <LinearLayout
+                android:id="@+id/gradesContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_shape_bottom"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/addMore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addMore" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/gradesContent"
+        android:id="@+id/gradesComplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="1dip"
+        android:background="@drawable/custom_shape"
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/addMore"
+            android:id="@+id/gradesCompleteButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/addMore" />
+            android:text="@string/complete" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

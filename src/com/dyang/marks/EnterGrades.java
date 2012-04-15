@@ -23,12 +23,11 @@ public class EnterGrades extends Activity {
 
 	private Spinner courseSpinner;
 	private Spinner categorySpinner;
-	private TextView gradesLabel;
 	private Button addMore;
-	private LinearLayout boxTop1;
-	private LinearLayout boxTop2;
 	private LinearLayout gradesContent;
 	private LinearLayout enterGradeSpinners;
+	private LinearLayout spinnerLabel;
+	private LinearLayout gradesContentLabel;
 	private DatabaseHandler db;
 	private int counter;
 
@@ -41,19 +40,22 @@ public class EnterGrades extends Activity {
 
 		courseSpinner = (Spinner) findViewById(R.id.courseSpinner);
 		categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
-		gradesLabel = (TextView) findViewById(R.id.gradesLabel);
-		boxTop1 = (LinearLayout) findViewById(R.id.boxTop1);
-		boxTop2 = (LinearLayout) findViewById(R.id.boxTop2);
+		spinnerLabel = (LinearLayout) findViewById(R.id.spinnerLabel);
+		gradesContentLabel = (LinearLayout) findViewById(R.id.gradesContentLabel);
 		gradesContent = (LinearLayout) findViewById(R.id.gradesContent);
 		enterGradeSpinners = (LinearLayout) findViewById(R.id.enterGradeSpinners);
 		addMore = (Button) findViewById(R.id.addMore);
 		counter = 1;
 
-		boxTop1.setBackgroundResource(R.drawable.custom_shape_top);
-		boxTop2.setBackgroundResource(R.drawable.custom_shape_top);
-		enterGradeSpinners.setBackgroundResource(R.drawable.custom_shape_bottom);
-		gradesContent.setBackgroundResource(R.drawable.custom_shape_bottom);
-		// enterGradeSpinners.setBackgroundResource(R.drawable.custom_shape_bottom);
+		TextView spinnerLabelText = (TextView) spinnerLabel.getChildAt(0);
+		TextView gradesContentLabelText = (TextView) gradesContentLabel.getChildAt(0);
+
+		spinnerLabelText.setText(R.string.courseInfo);
+		gradesContentLabelText.setText(R.string.gradesInfo);
+		spinnerLabelText.setTextColor(Color.WHITE);
+		gradesContentLabelText.setTextColor(Color.WHITE);
+		spinnerLabelText.setTextSize(15);
+		gradesContentLabelText.setTextSize(15);
 
 		CourseAdapter cAdapter = new CourseAdapter(this, android.R.layout.simple_spinner_item, db.getAllCourses());
 		cAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -99,13 +101,13 @@ public class EnterGrades extends Activity {
 	public void rowManager(boolean newCategory) {
 		if (newCategory) {
 			counter = 1;
-			//gradesContent.removeAllViews();
+			gradesContent.removeViews(0, gradesContent.getChildCount() - 1);
 		}
 		LinearLayout gradesRow = (LinearLayout) LayoutInflater.from(getBaseContext())
 				.inflate(R.layout.grades_row, null);
 		TextView child = (TextView) gradesRow.getChildAt(0);
 		child.setText(((CategoryObj) categorySpinner.getSelectedItem()).getCategoryName() + " " + counter++);
 		child.setTextColor(Color.BLACK);
-		gradesContent.addView(gradesRow, gradesContent.getChildCount()-1);
+		gradesContent.addView(gradesRow, gradesContent.getChildCount() - 1);
 	}
 }

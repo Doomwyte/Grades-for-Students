@@ -15,5 +15,6 @@
     <color name="Grey">#ffC0C0C0</color>
     <color name="Silver">#ffE6E8FA</color>
     <color name="Transparent">#00000000</color>
+    <color name="DarkGray">#FF191919</color>
 
 </resources>

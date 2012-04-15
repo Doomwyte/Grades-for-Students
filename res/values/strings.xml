@@ -8,6 +8,8 @@
     <string name="course">Course</string>
     <string name="courseName">Course Name</string>
     <string name="courseCode">Course Code</string>
+    <string name="courseInfo">Course Info</string>
+    <string name="gradesInfo">Grades Info</string>
     <string name="courseCategories">Course Breakdown</string>
     <string name="countGPA">Count in GPA?</string>
     <string name="setupName">Name</string>

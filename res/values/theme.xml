@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.Background" parent="android:Theme">
-        <item name="android:windowBackground">@color/Black</item>
+        <item name="android:windowBackground">@color/DarkGray</item>
     </style>
 
 </resources>
