@@ -202,32 +202,28 @@ public class EnterCategories extends Activity {
 
 			BigDecimal weightTotal = new BigDecimal(0.0);
 
+			BigDecimal weight1D = null;
+			BigDecimal weight2D = null;
+			BigDecimal weight3D = null;
+			BigDecimal weight4D = null;
+
 			if (!courseCategory1Input.getText().toString().equals("")) {
-				BigDecimal weight1D = new BigDecimal(weight1);
+				weight1D = new BigDecimal(weight1);
 				weightTotal = weightTotal.add(weight1D);
-				db.addCategory(new CategoryObj(category_id++, courseCategory1Input.getText().toString(), courseObj
-						.getId(), weight1D.doubleValue()));
 			}
 			if (!courseCategory2Input.getText().toString().equals("")) {
-				BigDecimal weight2D = new BigDecimal(weight2);
+				weight2D = new BigDecimal(weight2);
 				weightTotal = weightTotal.add(weight2D);
-				db.addCategory(new CategoryObj(category_id++, courseCategory2Input.getText().toString(), courseObj
-						.getId(), weight2D.doubleValue()));
 			}
 			if (!courseCategory3Input.getText().toString().equals("")) {
-				BigDecimal weight3D = new BigDecimal(weight3);
+				weight3D = new BigDecimal(weight3);
 				weightTotal = weightTotal.add(weight3D);
-				db.addCategory(new CategoryObj(category_id++, courseCategory3Input.getText().toString(), courseObj
-						.getId(), weight3D.doubleValue()));
 			}
 			if (!courseCategory4Input.getText().toString().equals("")) {
-				BigDecimal weight4D = new BigDecimal(weight4);
+				weight4D = new BigDecimal(weight4);
 				weightTotal = weightTotal.add(weight4D);
-				db.addCategory(new CategoryObj(category_id++, courseCategory4Input.getText().toString(), courseObj
-						.getId(), weight4D.doubleValue()));
 			}
 
-			Log.d("weightTotal", weightTotal.toPlainString());
 			if (weightTotal.doubleValue() != 100.0) {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage("Weighting for all categories must sum up to 100").setCancelable(false)
@@ -241,6 +237,20 @@ public class EnterCategories extends Activity {
 				alert.show();
 				return 1;
 			}
+
+			if (weight1D != null)
+				db.addCategory(new CategoryObj(category_id++, courseCategory1Input.getText().toString(), courseObj
+						.getId(), weight1D.doubleValue()));
+			if (weight2D != null)
+				db.addCategory(new CategoryObj(category_id++, courseCategory2Input.getText().toString(), courseObj
+						.getId(), weight2D.doubleValue()));
+			if (weight3D != null)
+				db.addCategory(new CategoryObj(category_id++, courseCategory3Input.getText().toString(), courseObj
+						.getId(), weight3D.doubleValue()));
+			if (weight4D != null)
+				db.addCategory(new CategoryObj(category_id++, courseCategory4Input.getText().toString(), courseObj
+						.getId(), weight4D.doubleValue()));
+
 		} catch (NumberFormatException nfe) {
 			nfe.printStackTrace();
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);

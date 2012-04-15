@@ -30,7 +30,9 @@
             <Spinner
                 android:id="@+id/categorySpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:prompt="@string/selectACategory"
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 
@@ -40,13 +42,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/gradesComplete"
         android:layout_below="@+id/spinnerLayout"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="invisible" >
 
         <include
             android:id="@+id/gradesContentLabel"
             layout="@layout/top_bracket" />
 
         <ScrollView
+            android:id="@+id/gradesContentScroll"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fadeScrollbars="false" >
@@ -60,6 +64,7 @@
 
                 <Button
                     android:id="@+id/addMore"
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/addMore" />
@@ -78,6 +83,7 @@
 
         <Button
             android:id="@+id/gradesCompleteButton"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/complete" />

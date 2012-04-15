@@ -34,5 +34,7 @@
     <string name="enterGrades">Enter Grades</string>
     <string name="grades">Grades</string>
     <string name="addMore">Add More</string>
+    <string name="selectACourse">Select a course</string>
+    <string name="selectACategory">Select a category</string>
 
 </resources>

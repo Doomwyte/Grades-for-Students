@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Background" parent="android:Theme">
+    <style name="Theme.Background.DarkGray" parent="android:Theme">
         <item name="android:windowBackground">@color/DarkGray</item>
+    </style>
+
+    <style name="Theme.Background.White" parent="android:Theme">
+        <item name="android:windowBackground">@color/White</item>
     </style>
 
 </resources>

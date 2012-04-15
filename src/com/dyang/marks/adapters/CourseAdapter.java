@@ -24,7 +24,10 @@ public class CourseAdapter extends ArrayAdapter<CourseObj> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = super.getView(position, convertView, parent);
 		CourseObj item = courseItems.get(position);
-		((TextView) v).setText(item.getName() + " (" + item.getCode() + ")");
+		if (!item.getCode().equals("999"))
+			((TextView) v).setText(item.getName() + " (" + item.getCode() + ")");
+		else
+			((TextView) v).setText(item.getName());
 		return v;
 	}
 
@@ -33,7 +36,10 @@ public class CourseAdapter extends ArrayAdapter<CourseObj> {
 		View v = super.getDropDownView(position, convertView, parent);
 		CourseObj item = courseItems.get(position);
 		TextView tv = (TextView) v.findViewById(android.R.id.text1);
-		tv.setText(item.getName() + " (" + item.getCode() + ")");
+		if (!item.getCode().equals("999"))
+			tv.setText(item.getName() + " (" + item.getCode() + ")");
+		else
+			tv.setText(item.getName());
 		return v;
 	}
 

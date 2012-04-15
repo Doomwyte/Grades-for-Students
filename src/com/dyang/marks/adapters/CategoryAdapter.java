@@ -23,7 +23,7 @@ public class CategoryAdapter extends ArrayAdapter<CategoryObj> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = super.getView(position, convertView, parent);
 		CategoryObj item = categoryItems.get(position);
-		((TextView) v).setText(item.getCategoryName());
+		((TextView) v).setText(item.getCategoryName() + " (" + item.getWeight() + "%)");
 		return v;
 	}
 
@@ -32,7 +32,7 @@ public class CategoryAdapter extends ArrayAdapter<CategoryObj> {
 		View v = super.getDropDownView(position, convertView, parent);
 		CategoryObj item = categoryItems.get(position);
 		TextView tv = (TextView) v.findViewById(android.R.id.text1);
-		tv.setText(item.getCategoryName());
+		tv.setText(item.getCategoryName() + " (" + item.getWeight() + "%)");
 		v.bringToFront();
 		return v;
 	}
