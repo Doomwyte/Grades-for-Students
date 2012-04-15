@@ -3,8 +3,9 @@ package com.dyang.marks.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dyang.marks.courseObj.CategoryObj;
-import com.dyang.marks.courseObj.CourseObj;
+import com.dyang.marks.Obj.CategoryObj;
+import com.dyang.marks.Obj.CourseObj;
+import com.dyang.marks.Obj.GradeObj;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,6 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Table Names
 	private static final String courses_table = "courses";
 	private static final String categories_table = "categories";
+	private static final String grades_table = "grades";
 
 	// Courses table columns names
 	private static final String KEY_ID = "id";
@@ -30,6 +32,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_CODE = "code";
 	private static final String KEY_GPA = "gpa";
 	private static final String KEY_COURSE_ID = "course_id";
+	private static final String KEY_CATEGORY_ID = "category_id";
+	private static final String KEY_GRADE_NAME = "grade_name";
+	private static final String KEY_GRADE = "grade";
 	private static final String KEY_WEIGHT = "weight";
 
 	public DatabaseHandler(Context context) {
@@ -42,8 +47,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_NAME + " TEXT," + KEY_CODE + " TEXT," + KEY_GPA + " TEXT)";
 		String CREATE_CATEGORIES_TABLE = "CREATE TABLE " + categories_table + " (" + KEY_ID + " INTEGER PRIMARY KEY, "
 				+ KEY_NAME + " TEXT," + KEY_COURSE_ID + " INTEGER," + KEY_WEIGHT + " DOUBLE)";
+		String CREATE_GRADES_TABLE = "CREATE TABLE " + grades_table + " (" + KEY_ID + " INTEGER PRIMARY KEY, "
+				+ KEY_GRADE_NAME + " TEXT," + KEY_GRADE + " DOUBLE," + KEY_COURSE_ID + " INTEGER," + KEY_CATEGORY_ID
+				+ " INTEGER)";
 		db.execSQL(CREATE_COURSES_TABLE);
 		db.execSQL(CREATE_CATEGORIES_TABLE);
+		db.execSQL(CREATE_GRADES_TABLE);
 	}
 
 	@Override
@@ -51,6 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + courses_table);
 		db.execSQL("DROP TABLE IF EXISTS " + categories_table);
+		db.execSQL("DROP TABLE IF EXISTS " + grades_table);
 		// Create tables again
 		onCreate(db);
 		db.close();
@@ -59,7 +69,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new course
 	public void addCourse(CourseObj course) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		ContentValues values = new ContentValues();
 		values.put(KEY_ID, course.getId()); // Course ID
 		values.put(KEY_NAME, course.getName()); // Course Name
@@ -74,7 +84,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding category
 	public void addCategory(CategoryObj categoryObj) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		ContentValues values = new ContentValues();
 		values.put(KEY_ID, categoryObj.getId()); // Category ID
 		values.put(KEY_NAME, categoryObj.getCategoryName()); // Category Name
@@ -83,6 +93,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// Inserting Row
 		db.insert(categories_table, null, values);
+		db.close();
+	}
+
+	// Adding grade
+	public void addGrade(GradeObj gradeObj) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_ID, gradeObj.getId()); // Grade ID
+		values.put(KEY_GRADE_NAME, gradeObj.getGrade_name()); // Grade Name
+		values.put(KEY_GRADE, gradeObj.getGrade()); // Grade
+		values.put(KEY_COURSE_ID, gradeObj.getCourse_id()); // Course ID
+		values.put(KEY_CATEGORY_ID, gradeObj.getCategory_id()); // Category ID
+
+		// Inserting Row
+		db.insert(grades_table, null, values);
+		db.close();
+	}
+
+	// Pre-insert grade
+	public void preAddGrade(int course_id, int category_id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(grades_table, KEY_COURSE_ID + "=? AND " + KEY_CATEGORY_ID + "=?",
+				new String[] { Integer.toString(course_id), Integer.toString(category_id) });
 		db.close();
 	}
 
@@ -163,6 +197,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return categoryList;
 	}
 
+	// Getting all grades
+	public List<GradeObj> getAllGrades(int course_id, int category_id) {
+		List<GradeObj> gradeList = new ArrayList<GradeObj>();
+		// Select All Query
+		String selectQuery = "SELECT * FROM " + grades_table + " WHERE " + KEY_COURSE_ID + "=" + course_id + " AND "
+				+ KEY_CATEGORY_ID + "=" + category_id;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				GradeObj grade = new GradeObj();
+				grade.setId(cursor.getInt(0));
+				grade.setGrade_name(cursor.getString(1));
+				grade.setGrade(cursor.getDouble(2));
+				grade.setCourse_id(cursor.getInt(3));
+				grade.setCategory_id(cursor.getInt(4));
+				// Adding category to list
+				gradeList.add(grade);
+			} while (cursor.moveToNext());
+		}
+
+		db.close();
+		cursor.close();
+
+		// return grade list
+		return gradeList;
+	}
+
 	// Getting courses count
 	public int getCoursesCount() {
 		String countQuery = "SELECT * FROM courses";
@@ -191,8 +256,51 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting categories count
+	public int getCategoriesCount(int course_id) {
+		String countQuery = "SELECT * FROM " + categories_table + " WHERE " + KEY_COURSE_ID + "=" + course_id;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		int count = cursor.getCount();
+		cursor.close();
+		db.close();
+
+		// return count
+		return count;
+	}
+
+	// Getting categories count
 	public int getCategoriesCount() {
 		String countQuery = "SELECT * FROM " + categories_table;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		int count = cursor.getCount();
+		cursor.close();
+		db.close();
+
+		// return count
+		return count;
+	}
+
+	// Getting grades count
+	public int getGradesCount(int course_id, int category_id) {
+		String countQuery = "SELECT * FROM " + grades_table + " WHERE " + KEY_COURSE_ID + "=" + course_id + " AND "
+				+ KEY_CATEGORY_ID + "=" + category_id;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		int count = cursor.getCount();
+		cursor.close();
+		db.close();
+
+		// return count
+		return count;
+	}
+
+	// Getting grades count
+	public int getGradesCount() {
+		String countQuery = "SELECT * FROM " + grades_table;
 
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
@@ -232,6 +340,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(courses_table, "1", new String[] {});
 		db.delete(categories_table, "1", new String[] {});
+		db.delete(grades_table, "1", new String[] {});
 		db.close();
 	}
 

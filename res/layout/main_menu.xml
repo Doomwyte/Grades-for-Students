@@ -42,7 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:text="@string/enterGrades" />
+            android:text="@string/enterGrades"
+            android:textColor="@color/Black" />
 
         <TextView
             android:id="@+id/MainMenuButtonLabel2"
@@ -50,7 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:text="@string/university" />
+            android:text="@string/setup"
+            android:textColor="@color/Black" />
     </LinearLayout>
 
     <LinearLayout

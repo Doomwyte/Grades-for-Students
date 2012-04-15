@@ -1,6 +1,7 @@
 package com.dyang.marks;
 
-import com.dyang.marks.courseObj.CourseObj;
+import com.dyang.marks.Obj.CourseObj;
+import com.dyang.marks.utils.DatabaseHandler;
 
 import android.app.Activity;
 import android.app.TabActivity;
@@ -22,6 +23,10 @@ public class CourseTabLayoutActivity extends TabActivity {
 		parentActivity = this;
 
 		tabHost = getTabHost();
+
+		DatabaseHandler dh = new DatabaseHandler(this);
+		dh.deleteAllCourses();
+		dh.close();
 
 		// Tab for Photos
 		TabSpec coursespec = tabHost.newTabSpec("General");

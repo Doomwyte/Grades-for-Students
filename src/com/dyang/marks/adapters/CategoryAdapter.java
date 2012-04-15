@@ -2,7 +2,7 @@ package com.dyang.marks.adapters;
 
 import java.util.List;
 
-import com.dyang.marks.courseObj.CategoryObj;
+import com.dyang.marks.Obj.CategoryObj;
 
 import android.content.Context;
 import android.view.View;

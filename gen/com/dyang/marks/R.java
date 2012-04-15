@@ -99,6 +99,7 @@ public final class R {
         public static final int courseInfo=0x7f060007;
         public static final int courseList=0x7f060016;
         public static final int courseName=0x7f060005;
+        public static final int editCourse=0x7f060023;
         public static final int educationLevel=0x7f06000d;
         public static final int enterCourses=0x7f060015;
         public static final int enterGrades=0x7f06001e;
@@ -112,6 +113,7 @@ public final class R {
         public static final int next=0x7f060010;
         public static final int selectACategory=0x7f060022;
         public static final int selectACourse=0x7f060021;
+        public static final int setup=0x7f060024;
         public static final int setupComplete=0x7f060017;
         public static final int setupCourses=0x7f06000c;
         public static final int setupName=0x7f06000b;

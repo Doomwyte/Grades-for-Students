@@ -1,7 +1,5 @@
 package com.dyang.marks;
 
-import com.dyang.marks.utils.DatabaseHandler;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,9 +23,6 @@ public class GradesforStudentsActivity extends Activity {
 				GradesforStudentsActivity.this.startActivity(myIntent);
 			}
 		});
-		//DatabaseHandler dh = new DatabaseHandler(this);
-		//dh.deleteAllCourses();
-		//dh.close();
 	}
 
 }

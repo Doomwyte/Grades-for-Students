@@ -2,8 +2,8 @@ package com.dyang.marks;
 
 import java.math.BigDecimal;
 
-import com.dyang.marks.courseObj.CategoryObj;
-import com.dyang.marks.courseObj.CourseObj;
+import com.dyang.marks.Obj.CategoryObj;
+import com.dyang.marks.Obj.CourseObj;
 import com.dyang.marks.utils.DatabaseHandler;
 
 import android.app.Activity;
@@ -14,7 +14,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;

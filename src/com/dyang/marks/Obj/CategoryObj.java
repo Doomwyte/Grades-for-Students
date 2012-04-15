@@ -1,4 +1,4 @@
-package com.dyang.marks.courseObj;
+package com.dyang.marks.Obj;
 
 public class CategoryObj {
 	private int id;

@@ -8,7 +8,7 @@
     <string name="course">Course</string>
     <string name="courseName">Course Name</string>
     <string name="courseCode">Course Code</string>
-    <string name="courseInfo">Course Info</string>
+    <string name="courseInfo">Course Selection</string>
     <string name="gradesInfo">Grades Info</string>
     <string name="courseCategories">Course Breakdown</string>
     <string name="countGPA">Count in GPA?</string>
@@ -36,5 +36,7 @@
     <string name="addMore">Add More</string>
     <string name="selectACourse">Select a course</string>
     <string name="selectACategory">Select a category</string>
+    <string name="editCourse">Edit Course</string>
+    <string name="setup">Setup</string>
 
 </resources>

@@ -1,6 +1,6 @@
 package com.dyang.marks;
 
-import com.dyang.marks.courseObj.CourseObj;
+import com.dyang.marks.Obj.CourseObj;
 import com.dyang.marks.utils.DatabaseHandler;
 
 import android.app.Activity;
