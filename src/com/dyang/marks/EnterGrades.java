@@ -3,6 +3,9 @@ package com.dyang.marks;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.CourseObj;
 import com.dyang.marks.Obj.GradeObj;
@@ -10,7 +13,6 @@ import com.dyang.marks.adapters.CategoryAdapter;
 import com.dyang.marks.adapters.CourseAdapter;
 import com.dyang.marks.utils.DatabaseHandler;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,11 +34,12 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class EnterGrades extends Activity {
+public class EnterGrades extends SherlockActivity {
 
 	private Spinner courseSpinner;
 	private Spinner categorySpinner;
@@ -46,6 +49,7 @@ public class EnterGrades extends Activity {
 	private LinearLayout gradesLayout;
 	private LinearLayout spinnerLabel;
 	private LinearLayout gradesContentLabel;
+	private RelativeLayout enterGradesRoot;
 	private DatabaseHandler db;
 	private int counter;
 
@@ -62,10 +66,13 @@ public class EnterGrades extends Activity {
 		gradesContentLabel = (LinearLayout) findViewById(R.id.gradesContentLabel);
 		gradesContent = (LinearLayout) findViewById(R.id.gradesContent);
 		gradesLayout = (LinearLayout) findViewById(R.id.gradesLayout);
+		enterGradesRoot = (RelativeLayout) findViewById(R.id.enterGradesRoot);
 		gradesContentScroll = (ScrollView) findViewById(R.id.gradesContentScroll);
 		addMore = (Button) findViewById(R.id.addMore);
 		completeButton = (Button) findViewById(R.id.gradesCompleteButton);
 		counter = 1;
+		
+		enterGradesRoot.setBackgroundColor(Color.DKGRAY);
 
 		TextView spinnerLabelText = (TextView) spinnerLabel.getChildAt(0);
 		TextView gradesContentLabelText = (TextView) gradesContentLabel.getChildAt(0);
@@ -149,6 +156,10 @@ public class EnterGrades extends Activity {
 				EnterGrades.this.startActivity(intent);
 			}
 		});
+		
+		ActionBar ab = getSupportActionBar();
+		ab.addTab();
+		
 
 	}
 
@@ -302,8 +313,10 @@ public class EnterGrades extends Activity {
 			gradeRow = (LinearLayout) gradesContent.getChildAt(i);
 			grade_name = (Button) gradeRow.getChildAt(0);
 			grade = (EditText) gradeRow.getChildAt(1);
-			db.addGrade(new GradeObj(db.getGradesCount() + 1, grade_name.getText().toString(), Double.valueOf(grade
-					.getText().toString()), course_id, category_id));
+			if (!grade.getText().toString().trim().equals("")) {
+				db.addGrade(new GradeObj(db.getGradesCount() + 1, grade_name.getText().toString(), Double.valueOf(grade
+						.getText().toString()), course_id, category_id));
+			}
 		}
 
 		db.close();
