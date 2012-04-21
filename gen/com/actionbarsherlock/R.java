@@ -805,9 +805,11 @@ containing a value of this type.
         public static final int custom_shape=0x7f020055;
         public static final int custom_shape_bottom=0x7f020056;
         public static final int custom_shape_top=0x7f020057;
-        public static final int ic_launcher=0x7f020058;
-        public static final int icon=0x7f020059;
-        public static final int icon_course_tab=0x7f02005a;
+        public static final int ic_action_overflow=0x7f020058;
+        public static final int ic_launcher=0x7f020059;
+        public static final int icon=0x7f02005a;
+        public static final int icon_course_tab=0x7f02005b;
+        public static final int navigation_cancel=0x7f02005c;
     }
     public static final class id {
         public static final int MainMenuButton1=0x7f050039;
@@ -872,6 +874,8 @@ containing a value of this type.
         public static final int myText1=0x7f050045;
         public static final int next=0x7f05002b;
         public static final int normal=0x7f050001;
+        public static final int preferences1=0x7f050047;
+        public static final int preferences2=0x7f050048;
         public static final int setupTextTitle=0x7f05002a;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
@@ -917,6 +921,9 @@ containing a value of this type.
         public static final int sherlock_spinner_item=0x7f03001c;
         public static final int top_bracket=0x7f03001d;
         public static final int welcome=0x7f03001e;
+    }
+    public static final class menu {
+        public static final int mainmenu=0x7f0c0000;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 

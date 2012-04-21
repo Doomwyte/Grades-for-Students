@@ -3,9 +3,10 @@ package com.dyang.marks;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.CourseObj;
 import com.dyang.marks.Obj.GradeObj;
@@ -25,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -33,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -49,8 +52,10 @@ public class EnterGrades extends SherlockActivity {
 	private LinearLayout gradesLayout;
 	private LinearLayout spinnerLabel;
 	private LinearLayout gradesContentLabel;
+	private LinearLayout gradesRow;
 	private RelativeLayout enterGradesRoot;
 	private DatabaseHandler db;
+	private ImageView gradesRowDelete;
 	private int counter;
 
 	@Override
@@ -71,7 +76,7 @@ public class EnterGrades extends SherlockActivity {
 		addMore = (Button) findViewById(R.id.addMore);
 		completeButton = (Button) findViewById(R.id.gradesCompleteButton);
 		counter = 1;
-		
+
 		enterGradesRoot.setBackgroundColor(Color.DKGRAY);
 
 		TextView spinnerLabelText = (TextView) spinnerLabel.getChildAt(0);
@@ -156,25 +161,19 @@ public class EnterGrades extends SherlockActivity {
 				EnterGrades.this.startActivity(intent);
 			}
 		});
-		
-		ActionBar ab = getSupportActionBar();
-		ab.addTab();
-		
-
 	}
 
 	public void rowManager(boolean newCategory, boolean addMore) {
-
 		if (newCategory) {
 			counter = 1;
 			gradesContent.removeViews(0, gradesContent.getChildCount() - 1);
 		}
 
-		LinearLayout gradesRow = (LinearLayout) LayoutInflater.from(getBaseContext())
-				.inflate(R.layout.grades_row, null);
+		gradesRow = (LinearLayout) LayoutInflater.from(getBaseContext()).inflate(R.layout.grades_row, null);
 		Button child = (Button) gradesRow.getChildAt(0);
 		child.setTextColor(Color.BLACK);
 		EditText childEdit = (EditText) gradesRow.getChildAt(1);
+		gradesRowDelete = (ImageView) gradesRow.getChildAt(2);
 
 		List<GradeObj> results = retrieveGrades(((CourseObj) courseSpinner.getSelectedItem()).getId(),
 				((CategoryObj) categorySpinner.getSelectedItem()).getId());
@@ -203,6 +202,51 @@ public class EnterGrades extends SherlockActivity {
 
 		});
 
+		gradesRowDelete.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				gradesRow = (LinearLayout) ((ImageView) arg0).getParent();
+				AnimationSet set = new AnimationSet(true);
+
+				Animation animation = new AlphaAnimation(1.0f, 0.0f);
+				animation.setDuration(200);
+				set.addAnimation(animation);
+
+				animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+						Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -0.5f);
+				animation.setDuration(100);
+				set.addAnimation(animation);
+
+				set.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						gradesContent.post(new Runnable() {
+							@Override
+							public void run() {
+								EnterGrades.this.runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										gradesContent.removeView(gradesRow);
+									}
+								});
+							}
+						});
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+				});
+
+				LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
+				gradesRow.setLayoutAnimation(controller);
+			}
+		});
+
 		gradesContentScroll.post(new Runnable() {
 			public void run() {
 				gradesContentScroll.fullScroll(ScrollView.FOCUS_DOWN);
@@ -212,16 +256,13 @@ public class EnterGrades extends SherlockActivity {
 		});
 
 		AnimationSet set = new AnimationSet(true);
-
 		Animation animation = new AlphaAnimation(0.0f, 1.0f);
 		animation.setDuration(200);
 		set.addAnimation(animation);
-
 		animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
 				Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
 		animation.setDuration(100);
 		set.addAnimation(animation);
-
 		LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
 		gradesRow.setLayoutAnimation(controller);
 	}
@@ -236,6 +277,7 @@ public class EnterGrades extends SherlockActivity {
 
 		TextView editCourse = new TextView(this);
 		editCourse.setText(R.string.courseName);
+		editCourse.setTextColor(Color.WHITE);
 		editCourse.setGravity(Gravity.LEFT);
 		editCourse.setPadding(5, 0, 0, 0);
 
@@ -244,6 +286,7 @@ public class EnterGrades extends SherlockActivity {
 
 		TextView courseWeighting = new TextView(this);
 		courseWeighting.setText(R.string.weighting);
+		courseWeighting.setTextColor(Color.WHITE);
 		courseWeighting.setGravity(Gravity.LEFT);
 		courseWeighting.setPadding(5, 0, 0, 0);
 
@@ -298,7 +341,6 @@ public class EnterGrades extends SherlockActivity {
 	}
 
 	public void insertGrades() {
-
 		LinearLayout gradeRow;
 		Button grade_name;
 		EditText grade;
@@ -318,14 +360,26 @@ public class EnterGrades extends SherlockActivity {
 						.getText().toString()), course_id, category_id));
 			}
 		}
-
 		db.close();
-
 	}
 
 	public List<GradeObj> retrieveGrades(int course_id, int category_id) {
 		DatabaseHandler db = new DatabaseHandler(this);
 		List<GradeObj> gradeObj = db.getAllGrades(course_id, category_id);
 		return gradeObj;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		SubMenu subMenu1 = menu.addSubMenu("Action Item");
+		subMenu1.add("Sample");
+		subMenu1.add("Menu");
+		subMenu1.add("Items");
+
+		MenuItem subMenu1Item = subMenu1.getItem();
+		subMenu1Item.setIcon(R.drawable.ic_action_overflow);
+		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+		return super.onCreateOptionsMenu(menu);
 	}
 }

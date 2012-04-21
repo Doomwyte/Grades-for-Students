@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/preferences1"
+        android:showAsAction="always|withText"
+        android:title="Search">
+    </item>
+    <item
+        android:id="@+id/preferences2"
+        android:showAsAction="always|withText"
+        android:title="Remove Course">
+    </item>
+
+</menu>
