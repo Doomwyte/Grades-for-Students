@@ -37,6 +37,9 @@
     <string name="selectACourse">Select a course</string>
     <string name="selectACategory">Select a category</string>
     <string name="editCourse">Edit Course</string>
-    <string name="setup">Setup</string>
+    <string name="reset">Reset</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="editSelectedCourse">Edit Selected Course</string>
+    <string name="deleteSelectedCourse">Delete Selected Course</string>
 
 </resources>

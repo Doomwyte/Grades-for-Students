@@ -112,6 +112,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	// Pre-insert course
+	public void preAddCourse(int course_id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(courses_table, KEY_ID + "=?", new String[] { Integer.toString(course_id) });
+		db.close();
+	}
+	
+	// Pre-insert category
+	public void preAddCategory(int course_id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(categories_table, KEY_COURSE_ID + "=?", new String[] { Integer.toString(course_id) });
+		db.close();
+	}
+
 	// Pre-insert grade
 	public void preAddGrade(int course_id, int category_id) {
 		SQLiteDatabase db = this.getWritableDatabase();

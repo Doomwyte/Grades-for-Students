@@ -6,6 +6,7 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.actionbarsherlock.view.SubMenu;
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.CourseObj;
@@ -57,6 +58,7 @@ public class EnterGrades extends SherlockActivity {
 	private DatabaseHandler db;
 	private ImageView gradesRowDelete;
 	private int counter;
+	private boolean init;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class EnterGrades extends SherlockActivity {
 		addMore = (Button) findViewById(R.id.addMore);
 		completeButton = (Button) findViewById(R.id.gradesCompleteButton);
 		counter = 1;
+		init = false;
 
 		enterGradesRoot.setBackgroundColor(Color.DKGRAY);
 
@@ -103,7 +106,6 @@ public class EnterGrades extends SherlockActivity {
 
 		courseSpinner.setAdapter(cAdapter);
 		courseSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				CourseObj selectedCourse = ((CourseObj) courseSpinner.getSelectedItem());
 				if (selectedCourse.getCode().equals("999")) {
@@ -125,17 +127,20 @@ public class EnterGrades extends SherlockActivity {
 				gradesLayout.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein));
 				categorySpinner.setVisibility(View.VISIBLE);
 				gradesLayout.setVisibility(View.VISIBLE);
-				insertGrades();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
-
 		});
 
 		categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				if (init) {
+					insertGrades();
+				} else {
+					init = true;
+				}
 				rowManager(true, false);
 			}
 
@@ -186,6 +191,52 @@ public class EnterGrades extends SherlockActivity {
 				childEdit = (EditText) gradesRow.getChildAt(1);
 				child.setText(results.get(i).getGrade_name());
 				childEdit.setText(Double.toString(results.get(i).getGrade()));
+				gradesRowDelete = (ImageView) gradesRow.getChildAt(2);
+				gradesRowDelete.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View arg0) {
+						final LinearLayout row = (LinearLayout) ((ImageView) arg0).getParent();
+
+						AnimationSet set = new AnimationSet(true);
+
+						Animation animation = new AlphaAnimation(1.0f, 0.0f);
+						animation.setDuration(200);
+						set.addAnimation(animation);
+
+						animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+								Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+								Animation.RELATIVE_TO_SELF, -1f);
+						animation.setDuration(200);
+						set.addAnimation(animation);
+
+						set.setAnimationListener(new AnimationListener() {
+
+							@Override
+							public void onAnimationEnd(Animation arg0) {
+								gradesContentScroll.post(new Runnable() {
+									@Override
+									public void run() {
+										gradesContent.removeView(row);
+									}
+								});
+							}
+
+							@Override
+							public void onAnimationRepeat(Animation arg0) {
+							}
+
+							@Override
+							public void onAnimationStart(Animation arg0) {
+							}
+
+						});
+
+						LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
+						row.setLayoutAnimation(controller);
+						row.invalidate();
+					}
+				});
+
 				gradesContent.addView(gradesRow, gradesContent.getChildCount() - 1);
 				counter++;
 			}
@@ -195,17 +246,16 @@ public class EnterGrades extends SherlockActivity {
 		}
 
 		child.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View arg0) {
 				editCourse(arg0);
 			}
-
 		});
 
 		gradesRowDelete.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				gradesRow = (LinearLayout) ((ImageView) arg0).getParent();
+				final LinearLayout row = (LinearLayout) ((ImageView) arg0).getParent();
+
 				AnimationSet set = new AnimationSet(true);
 
 				Animation animation = new AlphaAnimation(1.0f, 0.0f);
@@ -213,37 +263,36 @@ public class EnterGrades extends SherlockActivity {
 				set.addAnimation(animation);
 
 				animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
-						Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -0.5f);
-				animation.setDuration(100);
+						Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, -1f);
+				animation.setDuration(200);
 				set.addAnimation(animation);
 
 				set.setAnimationListener(new AnimationListener() {
+
 					@Override
-					public void onAnimationEnd(Animation animation) {
-						gradesContent.post(new Runnable() {
+					public void onAnimationEnd(Animation arg0) {
+						gradesContentScroll.post(new Runnable() {
 							@Override
 							public void run() {
-								EnterGrades.this.runOnUiThread(new Runnable() {
-									@Override
-									public void run() {
-										gradesContent.removeView(gradesRow);
-									}
-								});
+								gradesContent.removeView(row);
 							}
 						});
 					}
 
 					@Override
-					public void onAnimationRepeat(Animation animation) {
+					public void onAnimationRepeat(Animation arg0) {
 					}
 
 					@Override
-					public void onAnimationStart(Animation animation) {
+					public void onAnimationStart(Animation arg0) {
 					}
+
 				});
 
 				LayoutAnimationController controller = new LayoutAnimationController(set, 0.5f);
-				gradesRow.setLayoutAnimation(controller);
+				row.setLayoutAnimation(controller);
+
+				row.invalidate();
 			}
 		});
 
@@ -319,14 +368,7 @@ public class EnterGrades extends SherlockActivity {
 
 		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
-
 				// Do something with value!
-			}
-		});
-
-		alert.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				// Canceled.
 			}
 		});
 
@@ -341,6 +383,10 @@ public class EnterGrades extends SherlockActivity {
 	}
 
 	public void insertGrades() {
+
+		if (courseSpinner == null || categorySpinner == null || categorySpinner.getSelectedItem() == null)
+			return;
+
 		LinearLayout gradeRow;
 		Button grade_name;
 		EditText grade;
@@ -349,7 +395,8 @@ public class EnterGrades extends SherlockActivity {
 		int course_id = ((CourseObj) courseSpinner.getSelectedItem()).getId();
 		int category_id = ((CategoryObj) categorySpinner.getSelectedItem()).getId();
 
-		db.preAddGrade(course_id, category_id);
+		if (init)
+			db.preAddGrade(course_id, category_id);
 
 		for (int i = 0; i < gradesContent.getChildCount() - 1; i++) {
 			gradeRow = (LinearLayout) gradesContent.getChildAt(i);
@@ -372,13 +419,24 @@ public class EnterGrades extends SherlockActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		SubMenu subMenu1 = menu.addSubMenu("Action Item");
-		subMenu1.add("Sample");
-		subMenu1.add("Menu");
-		subMenu1.add("Items");
+		subMenu1.add(R.string.editSelectedCourse);
+		subMenu1.add(R.string.deleteSelectedCourse);
 
 		MenuItem subMenu1Item = subMenu1.getItem();
 		subMenu1Item.setIcon(R.drawable.ic_action_overflow);
 		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+		subMenu1.getItem(0).setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent intent = new Intent(EnterGrades.this, CourseTabLayoutActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("editMode", ((CourseObj) courseSpinner.getSelectedItem()).getId());
+				intent.putExtras(bundle);
+				EnterGrades.this.startActivity(intent);
+				return false;
+			}
+		});
 
 		return super.onCreateOptionsMenu(menu);
 	}

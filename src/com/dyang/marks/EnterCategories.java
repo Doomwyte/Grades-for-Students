@@ -1,6 +1,7 @@
 package com.dyang.marks;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.CourseObj;
@@ -41,6 +42,7 @@ public class EnterCategories extends Activity {
 	private Resources resources;
 	private float dipValue;
 	private Button next;
+	private int course_id;
 	private CourseTabLayoutActivity parentActivity;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,19 @@ public class EnterCategories extends Activity {
 		next = (Button) findViewById(R.id.next);
 		resources = getResources();
 		parentActivity = (CourseTabLayoutActivity) this.getParent();
+		course_id = parentActivity.getCourse_id();
 		inputCategorySettings();
 	}
 
 	public void inputCategorySettings() {
 		setupContent.removeAllViews();
-
 		dipValue = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, resources.getDisplayMetrics());
+
+		List<CategoryObj> categoryObjList = null;
+		if (course_id != 0) {
+			DatabaseHandler db = new DatabaseHandler(this);
+			categoryObjList = db.getAllCategories(course_id);
+		}
 
 		courseCategory1Input = new EditText(this);
 		courseCategory2Input = new EditText(this);
@@ -74,14 +82,14 @@ public class EnterCategories extends Activity {
 		courseCategory3Input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 		courseCategory4Input.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
+		courseCategory1Input.setText(R.string.assignments);
+		courseCategory2Input.setText(R.string.midterms);
+		courseCategory3Input.setText(R.string.finals);
+
 		courseCategory1Weighting = new EditText(this);
 		courseCategory2Weighting = new EditText(this);
 		courseCategory3Weighting = new EditText(this);
 		courseCategory4Weighting = new EditText(this);
-
-		courseCategory1Input.setText(R.string.assignments);
-		courseCategory2Input.setText(R.string.midterms);
-		courseCategory3Input.setText(R.string.finals);
 
 		courseCategory1Weighting.setHint(R.string.thirtypercent);
 		courseCategory2Weighting.setHint(R.string.thirtypercent);
@@ -92,6 +100,25 @@ public class EnterCategories extends Activity {
 		courseCategory2Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
 		courseCategory3Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
 		courseCategory4Weighting.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+		if (course_id != 0) {
+			if (categoryObjList.size() >= 1 && categoryObjList.get(0) != null) {
+				courseCategory1Input.setText(categoryObjList.get(0).getCategoryName().toString());
+				courseCategory1Weighting.setText(Double.toString(categoryObjList.get(0).getWeight()));
+			}
+			if (categoryObjList.size() >= 2 && categoryObjList.get(1) != null) {
+				courseCategory2Input.setText(categoryObjList.get(1).getCategoryName().toString());
+				courseCategory2Weighting.setText(Double.toString(categoryObjList.get(1).getWeight()));
+			}
+			if (categoryObjList.size() >= 3 && categoryObjList.get(2) != null) {
+				courseCategory3Input.setText(categoryObjList.get(2).getCategoryName().toString());
+				courseCategory3Weighting.setText(Double.toString(categoryObjList.get(2).getWeight()));
+			}
+			if (categoryObjList.size() >= 4 && categoryObjList.get(3) != null) {
+				courseCategory4Input.setText(categoryObjList.get(3).getCategoryName().toString());
+				courseCategory4Weighting.setText(Double.toString(categoryObjList.get(3).getWeight()));
+			}
+		}
 
 		TextView courseCategories = new TextView(this);
 		courseCategories.setText(R.string.courseCategories);
@@ -177,6 +204,9 @@ public class EnterCategories extends Activity {
 	public int insertInfo() {
 
 		DatabaseHandler db = new DatabaseHandler(this);
+
+		db.preAddCategory(course_id);
+		db.preAddCourse(course_id);
 
 		CourseObj courseObj = parentActivity.getCourseObj();
 		db.addCourse(courseObj);

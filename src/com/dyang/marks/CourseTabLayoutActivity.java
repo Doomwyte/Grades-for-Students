@@ -15,36 +15,27 @@ public class CourseTabLayoutActivity extends TabActivity {
 	public TabHost tabHost;
 	public CourseObj courseObj;
 	public static Activity parentActivity;
+	public int course_id;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.course_tabhost);
 		parentActivity = this;
-
 		tabHost = getTabHost();
+		setCourse_id(0);
 
-		DatabaseHandler dh = new DatabaseHandler(this);
-		dh.deleteAllCourses();
-		dh.close();
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			setCourse_id(bundle.getInt("editMode"));
+			resetTab();
+		}
 
-		// Tab for Photos
-		TabSpec coursespec = tabHost.newTabSpec("General");
-		// setting Title and Icon for the Tab
-		coursespec.setIndicator("General");
-		Intent courseIntent = new Intent(this, EnterCourses.class);
-		coursespec.setContent(courseIntent);
+		setTab();
 
-		// Tab for Songs
-		TabSpec categoryspec = tabHost.newTabSpec("Breakdown");
-		categoryspec.setIndicator("Breakdown");
-		Intent categoryIntent = new Intent(this, EnterCategories.class);
-		categoryspec.setContent(categoryIntent);
-
-		// Adding all TabSpec to TabHost
-		tabHost.addTab(coursespec); // Adding course tab
-		tabHost.addTab(categoryspec); // Adding category tab
-
+		//DatabaseHandler dh = new DatabaseHandler(this);
+		//dh.deleteAllCourses();
+		//dh.close();
 	}
 
 	public void switchTab(int tab) {
@@ -59,9 +50,35 @@ public class CourseTabLayoutActivity extends TabActivity {
 		return courseObj;
 	}
 
+	public void setCourse_id(int course_id) {
+		this.course_id = course_id;
+	}
+
+	public int getCourse_id() {
+		return course_id;
+	}
+
 	public void reload() {
 		startActivity(getIntent());
 		finish();
+	}
+
+	public void resetTab() {
+		tabHost.getTabWidget().removeAllViews();
+	}
+
+	public void setTab() {
+		TabSpec coursespec = tabHost.newTabSpec("General");
+		coursespec.setIndicator("General");
+		Intent courseIntent = new Intent(this, EnterCourses.class);
+		coursespec.setContent(courseIntent);
+		tabHost.addTab(coursespec);
+
+		TabSpec categoryspec = tabHost.newTabSpec("Breakdown");
+		categoryspec.setIndicator("Breakdown");
+		Intent categoryIntent = new Intent(this, EnterCategories.class);
+		categoryspec.setContent(categoryIntent);
+		tabHost.addTab(categoryspec);
 	}
 
 }

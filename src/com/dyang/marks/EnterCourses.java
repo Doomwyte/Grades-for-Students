@@ -31,6 +31,7 @@ public class EnterCourses extends Activity {
 	private float dipValue;
 	private Button next;
 	private CourseTabLayoutActivity parentActivity;
+	private int editCourseId;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,13 +39,25 @@ public class EnterCourses extends Activity {
 		setupContent = (RelativeLayout) findViewById(R.id.SetupContent);
 		next = (Button) findViewById(R.id.next);
 		resources = getResources();
-		inputCourseSettings();
+		parentActivity = (CourseTabLayoutActivity) getParent();
+		editCourseId = parentActivity.getCourse_id();
+		if (editCourseId == 0) {
+			inputCourseSettings(false);
+		} else {
+			inputCourseSettings(true);
+		}
 	}
 
-	public void inputCourseSettings() {
-		setupContent.removeAllViews();
+	public void inputCourseSettings(final boolean edit) {
 
-		parentActivity = (CourseTabLayoutActivity) getParent();
+		CourseObj course = null;
+		if (edit) {
+			DatabaseHandler db = new DatabaseHandler(this);
+			course = db.getCourse(editCourseId);
+			db.close();
+		}
+
+		setupContent.removeAllViews();
 
 		dipValue = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, resources.getDisplayMetrics());
 
@@ -69,6 +82,12 @@ public class EnterCourses extends Activity {
 		countGPA.setTextSize(dipValue);
 		countGPA.setTextColor(Color.BLACK);
 		countGPABox = new CheckBox(this);
+
+		if (edit) {
+			courseNameInput.setText(course.getName());
+			courseCodeInput.setText(course.getCode());
+			countGPABox.setChecked(Boolean.valueOf(course.getCountAsGpa()));
+		}
 
 		TableLayout courseContent = new TableLayout(this);
 		TableRow courseNameRow = new TableRow(this);
@@ -118,8 +137,13 @@ public class EnterCourses extends Activity {
 		parentActivity.tabHost.setOnTabChangedListener(new OnTabChangeListener() {
 
 			public void onTabChanged(String arg0) {
-				if (parentActivity.getTabHost().getCurrentTab() == 1)
-					setCourseInfo(0);
+				if (parentActivity.getTabHost().getCurrentTab() == 1) {
+					setCourseInfo(editCourseId);
+					if (edit) {
+						parentActivity.resetTab();
+						parentActivity.setTab();
+					}
+				}
 			}
 
 		});
@@ -135,8 +159,8 @@ public class EnterCourses extends Activity {
 			id = db.getCoursesCount() + 1;
 
 		// Sending course object to tab host
-		CourseObj courseObj = new CourseObj(id, courseNameInput.getText().toString(), courseCodeInput
-				.getText().toString().toUpperCase(), new Boolean(countGPABox.isSelected()).toString());
+		CourseObj courseObj = new CourseObj(id, courseNameInput.getText().toString(), courseCodeInput.getText()
+				.toString().toUpperCase(), new Boolean(countGPABox.isSelected()).toString());
 		parentActivity.setCourseObj(courseObj);
 
 		db.close();

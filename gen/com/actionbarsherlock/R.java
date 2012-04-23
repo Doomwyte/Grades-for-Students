@@ -817,13 +817,11 @@ containing a value of this type.
         public static final int MainMenuButton3=0x7f05003d;
         public static final int MainMenuButton4=0x7f05003e;
         public static final int MainMenuButton5=0x7f050041;
-        public static final int MainMenuButton6=0x7f050042;
         public static final int MainMenuButtonLabel1=0x7f05003b;
         public static final int MainMenuButtonLabel2=0x7f05003c;
         public static final int MainMenuButtonLabel3=0x7f05003f;
         public static final int MainMenuButtonLabel4=0x7f050040;
         public static final int MainMenuButtonLabel5=0x7f050043;
-        public static final int MainMenuButtonLabel6=0x7f050044;
         public static final int RelativeLayoutRoot=0x7f050027;
         public static final int SetupContent=0x7f050028;
         public static final int SetupFooter=0x7f050029;
@@ -876,6 +874,8 @@ containing a value of this type.
         public static final int normal=0x7f050001;
         public static final int preferences1=0x7f050047;
         public static final int preferences2=0x7f050048;
+        public static final int setupButton=0x7f050042;
+        public static final int setupLabel=0x7f050044;
         public static final int setupTextTitle=0x7f05002a;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
@@ -970,7 +970,9 @@ containing a value of this type.
         public static final int courseInfo=0x7f0a0011;
         public static final int courseList=0x7f0a0020;
         public static final int courseName=0x7f0a000f;
+        public static final int deleteSelectedCourse=0x7f0a0031;
         public static final int editCourse=0x7f0a002d;
+        public static final int editSelectedCourse=0x7f0a0030;
         public static final int educationLevel=0x7f0a0017;
         public static final int enterCourses=0x7f0a001f;
         public static final int enterGrades=0x7f0a0028;
@@ -982,9 +984,10 @@ containing a value of this type.
         public static final int midterms=0x7f0a0023;
         public static final int name=0x7f0a000d;
         public static final int next=0x7f0a001a;
+        public static final int placeholder=0x7f0a002f;
+        public static final int reset=0x7f0a002e;
         public static final int selectACategory=0x7f0a002c;
         public static final int selectACourse=0x7f0a002b;
-        public static final int setup=0x7f0a002e;
         public static final int setupComplete=0x7f0a0021;
         public static final int setupCourses=0x7f0a0016;
         public static final int setupName=0x7f0a0015;
