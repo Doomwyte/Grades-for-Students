@@ -118,7 +118,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.delete(courses_table, KEY_ID + "=?", new String[] { Integer.toString(course_id) });
 		db.close();
 	}
-	
+
 	// Pre-insert category
 	public void preAddCategory(int course_id) {
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -132,6 +132,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.delete(grades_table, KEY_COURSE_ID + "=? AND " + KEY_CATEGORY_ID + "=?",
 				new String[] { Integer.toString(course_id), Integer.toString(category_id) });
 		db.close();
+	}
+
+	// Find out max ID
+	public int getNextGradeId() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.query(grades_table, new String[] { "MAX(" + KEY_ID + ")" }, null, null, null, null, null,
+				null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		int maxId = cursor.getInt(0);
+		return maxId + 1;
 	}
 
 	// Getting single course
@@ -346,6 +358,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(courses_table, KEY_ID + " = ?", new String[] { String.valueOf(course.getId()) });
 		db.delete(categories_table, KEY_COURSE_ID + " = ?", new String[] { String.valueOf(course.getId()) });
+		db.delete(grades_table, KEY_COURSE_ID + " = ?", new String[] { String.valueOf(course.getId()) });
 		db.close();
 	}
 

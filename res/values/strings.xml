@@ -41,5 +41,11 @@
     <string name="placeholder">Placeholder</string>
     <string name="editSelectedCourse">Edit Selected Course</string>
     <string name="deleteSelectedCourse">Delete Selected Course</string>
+    <string name="gradesStatistics">Grades Statistics</string>
+    <string-array name="listTemp">
+        <item>Hi1 Hi1 Hi1 Hi1</item>
+        <item>Hi2</item>
+        <item>Hi3</item>
+    </string-array>
 
 </resources>

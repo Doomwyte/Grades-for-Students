@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:text="@string/placeholder"
+            android:text="@string/gradesStatistics"
             android:textColor="@color/Black" />
     </LinearLayout>
 

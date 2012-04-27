@@ -57,8 +57,10 @@ public class EnterGrades extends SherlockActivity {
 	private RelativeLayout enterGradesRoot;
 	private DatabaseHandler db;
 	private ImageView gradesRowDelete;
-	private int counter;
 	private boolean init;
+	private int counter;
+	private int selectedCourseId;
+	private int selectedCategoryId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,7 @@ public class EnterGrades extends SherlockActivity {
 				gradesLayout.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein));
 				categorySpinner.setVisibility(View.VISIBLE);
 				gradesLayout.setVisibility(View.VISIBLE);
+				selectedCourseId = ((CourseObj) courseSpinner.getSelectedItem()).getId();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -142,6 +145,7 @@ public class EnterGrades extends SherlockActivity {
 					init = true;
 				}
 				rowManager(true, false);
+				selectedCategoryId = ((CategoryObj) categorySpinner.getSelectedItem()).getId();
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -169,6 +173,7 @@ public class EnterGrades extends SherlockActivity {
 	}
 
 	public void rowManager(boolean newCategory, boolean addMore) {
+
 		if (newCategory) {
 			counter = 1;
 			gradesContent.removeViews(0, gradesContent.getChildCount() - 1);
@@ -379,12 +384,11 @@ public class EnterGrades extends SherlockActivity {
 		});
 
 		alert.show();
-
 	}
 
 	public void insertGrades() {
-
-		if (courseSpinner == null || categorySpinner == null || categorySpinner.getSelectedItem() == null)
+		if (courseSpinner.getSelectedItem() == null || courseSpinner == null || categorySpinner == null
+				|| categorySpinner.getSelectedItem() == null)
 			return;
 
 		LinearLayout gradeRow;
@@ -392,19 +396,17 @@ public class EnterGrades extends SherlockActivity {
 		EditText grade;
 		DatabaseHandler db = new DatabaseHandler(this);
 
-		int course_id = ((CourseObj) courseSpinner.getSelectedItem()).getId();
-		int category_id = ((CategoryObj) categorySpinner.getSelectedItem()).getId();
-
 		if (init)
-			db.preAddGrade(course_id, category_id);
+			db.preAddGrade(selectedCourseId, selectedCategoryId);
 
 		for (int i = 0; i < gradesContent.getChildCount() - 1; i++) {
 			gradeRow = (LinearLayout) gradesContent.getChildAt(i);
 			grade_name = (Button) gradeRow.getChildAt(0);
 			grade = (EditText) gradeRow.getChildAt(1);
+
 			if (!grade.getText().toString().trim().equals("")) {
-				db.addGrade(new GradeObj(db.getGradesCount() + 1, grade_name.getText().toString(), Double.valueOf(grade
-						.getText().toString()), course_id, category_id));
+				db.addGrade(new GradeObj(db.getNextGradeId(), grade_name.getText().toString(), Double.valueOf(grade
+						.getText().toString()), selectedCourseId, selectedCategoryId));
 			}
 		}
 		db.close();
@@ -438,6 +440,36 @@ public class EnterGrades extends SherlockActivity {
 			}
 		});
 
+		subMenu1.getItem(1).setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				final CourseObj courseToDelete = (CourseObj) courseSpinner.getSelectedItem();
+				AlertDialog.Builder builder = new AlertDialog.Builder(EnterGrades.this);
+				builder.setMessage(
+						"Are you sure you want to delete this course along with its grades?\n\nCourse Name: "
+								+ courseToDelete.getName() + "\nCourse Code: " + courseToDelete.getCode())
+						.setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								DatabaseHandler db = new DatabaseHandler(EnterGrades.this);
+								db.deleteCourse(courseToDelete);
+								db.close();
+								Intent intent = getIntent();
+								finish();
+								startActivity(intent);
+							}
+						}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+				builder.setTitle("WARNING");
+				AlertDialog alert = builder.create();
+				alert.show();
+				return false;
+			}
+		});
+
 		return super.onCreateOptionsMenu(menu);
 	}
+
 }

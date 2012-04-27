@@ -48,6 +48,38 @@
             android:theme="@style/Theme.Sherlock.Light"
             android:windowSoftInputMode="stateVisible|adjustPan" >
         </activity>
+        <activity
+            android:name=".GradesStats"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
+            <intent-filter>
+                <action android:name="com.dyang.marks.REFRESH" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".StatsOverview"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
+        </activity>
+        <activity
+            android:name=".StatsGrades"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
+        </activity>
+        <activity
+            android:name=".StatsAnalysis"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Sherlock.Light"
+            android:windowSoftInputMode="stateVisible|adjustPan" >
+        </activity>
+        <receiver android:name=".MyReceiver" >
+            <intent-filter>
+                <action android:name="com.dyang.marks.NIF" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
