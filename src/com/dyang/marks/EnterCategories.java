@@ -52,7 +52,7 @@ public class EnterCategories extends Activity {
 		setupFooter = (RelativeLayout) findViewById(R.id.SetupFooter);
 		next = (Button) findViewById(R.id.next);
 		resources = getResources();
-		parentActivity = (CourseTabLayoutActivity) this.getParent();
+		parentActivity = (CourseTabLayoutActivity) getParent();
 		course_id = parentActivity.getCourse_id();
 		inputCategorySettings();
 	}

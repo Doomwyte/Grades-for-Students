@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.dyang.marks.Obj.CategoryObj;
-import com.dyang.marks.Obj.CourseObj;
 import com.dyang.marks.utils.DatabaseHandler;
 import com.dyang.marks.utils.PieChart;
 import com.dyang.marks.utils.PieItem;
 
 import android.app.Activity;
+import android.app.TabActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,35 +18,108 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class StatsOverview extends Activity {
 
-	private LinearLayout statsOverviewLayout;
-	private LinearLayout statsOverviewLabel;
-	private LinearLayout statsOverview;
+	private LinearLayout statsOverviewGeneralLabel;
+	private LinearLayout statsOverviewGeneral;
+	private LinearLayout statsOverviewBreakdownLabel;
+	private LinearLayout statsOverviewBreakdown;
 	private List<CategoryObj> categoryObjs;
+	private BroadcastReceiver receiver;
+	private GradesStats parentActivity;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stats_overview);
 
-		GradesStats parentActivity = (GradesStats) getParent();
+		parentActivity = (GradesStats) getParent();
+		statsOverviewGeneralLabel = (LinearLayout) findViewById(R.id.statsOverviewGeneralLabel);
+		statsOverviewGeneral = (LinearLayout) findViewById(R.id.statsOverviewGeneral);
+		statsOverviewBreakdownLabel = (LinearLayout) findViewById(R.id.statsOverviewBreakdownLabel);
+		statsOverviewBreakdown = (LinearLayout) findViewById(R.id.statsOverviewBreakdown);
+		statsOverviewGeneral.setGravity(Gravity.CENTER_HORIZONTAL);
+		statsOverviewBreakdown.setGravity(Gravity.CENTER_HORIZONTAL);
 
-		statsOverviewLabel = (LinearLayout) findViewById(R.id.statsOverviewLabel);
-		statsOverview = (LinearLayout) findViewById(R.id.statsOverview);
-		statsOverview.setGravity(Gravity.CENTER_HORIZONTAL);
+		TextView generalLabel = (TextView) statsOverviewGeneralLabel.getChildAt(0);
+		generalLabel.setText("General");
+		generalLabel.setTextColor(Color.WHITE);
 
-		TextView label = (TextView) statsOverviewLabel.getChildAt(0);
-		label.setText("Grades Breakdown");
-		label.setTextColor(Color.WHITE);
+		TextView breakdownLabel = (TextView) statsOverviewBreakdownLabel.getChildAt(0);
+		breakdownLabel.setText("Grades Breakdown");
+		breakdownLabel.setTextColor(Color.WHITE);
 
+		populateGeneralInfo();
+		generateGraph();
+
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("com.dyang.marks.RELOAD_TAB");
+		receiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				statsOverviewBreakdown.getChildAt(0).startAnimation(
+						AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout));
+				statsOverviewBreakdown.getChildAt(0).setVisibility(View.INVISIBLE);
+				statsOverviewBreakdown.removeAllViews();
+				populateGeneralInfo();
+				generateGraph();
+			}
+		};
+		registerReceiver(receiver, filter);
+	}
+
+	public void populateGeneralInfo() {
+		statsOverviewGeneral.removeAllViews();
+		
+		DatabaseHandler db = new DatabaseHandler(this);
+		TableLayout tableLayout = new TableLayout(this);
+
+		TextView courseNameLabel = new TextView(this);
+		TextView courseName = new TextView(this);
+		courseNameLabel.setText(R.string.courseName);
+		courseName.setText(db.getCourse(parentActivity.getCourse_id()).getName());
+
+		TextView courseCodeLabel = new TextView(this);
+		TextView courseCode = new TextView(this);
+		courseCodeLabel.setText(R.string.courseCode);
+		courseCode.setText(db.getCourse(parentActivity.getCourse_id()).getCode());
+		
+		courseNameLabel.setTextSize(16);
+		courseCodeLabel.setTextSize(16);
+		courseName.setTextSize(16);
+		courseCode.setTextSize(16);
+		
+		courseNameLabel.setTypeface(null, Typeface.BOLD);
+		courseCodeLabel.setTypeface(null, Typeface.BOLD);
+
+		TableRow courseNameRow = new TableRow(this);
+		TableRow courseCodeRow = new TableRow(this);
+
+		courseNameRow.addView(courseNameLabel);
+		courseNameRow.addView(courseName);
+		courseCodeRow.addView(courseCodeLabel);
+		courseCodeRow.addView(courseCode);
+
+		tableLayout.addView(courseNameRow);
+		tableLayout.addView(courseCodeRow);
+		tableLayout.setStretchAllColumns(true);
+		
+		statsOverviewGeneral.addView(tableLayout);
+		db.close();
+	}
+
+	public void generateGraph() {
 		PieItem item;
 		TextView tv;
 		List<PieItem> pieData = new ArrayList<PieItem>();
@@ -90,7 +163,16 @@ public class StatsOverview extends Activity {
 		mImageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		mImageView.setBackgroundColor(bgColor);
 		mImageView.setImageBitmap(mBackgroundImage);
-
-		statsOverview.addView(mImageView);
+		mImageView.setVisibility(View.INVISIBLE);
+		statsOverviewBreakdown.addView(mImageView);
+		mImageView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein));
+		mImageView.setVisibility(View.VISIBLE);
 	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(receiver);
+	}
+
 }

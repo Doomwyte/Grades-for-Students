@@ -858,7 +858,7 @@ containing a value of this type.
         public static final int abs__titleDivider=0x7f05001c;
         public static final int abs__up=0x7f05000b;
         public static final int addMore=0x7f050037;
-        public static final int button1=0x7f05004b;
+        public static final int button1=0x7f05004d;
         public static final int categorySpinner=0x7f050031;
         public static final int courseSpinner=0x7f050030;
         public static final int disableHome=0x7f050009;
@@ -877,8 +877,8 @@ containing a value of this type.
         public static final int myText1=0x7f050047;
         public static final int next=0x7f05002b;
         public static final int normal=0x7f050001;
-        public static final int preferences1=0x7f05004c;
-        public static final int preferences2=0x7f05004d;
+        public static final int preferences1=0x7f05004e;
+        public static final int preferences2=0x7f05004f;
         public static final int setupButton=0x7f050044;
         public static final int setupLabel=0x7f050046;
         public static final int setupTextTitle=0x7f05002a;
@@ -887,8 +887,10 @@ containing a value of this type.
         public static final int showTitle=0x7f050007;
         public static final int spinnerLabel=0x7f05002e;
         public static final int spinnerLayout=0x7f05002d;
-        public static final int statsOverview=0x7f05004a;
-        public static final int statsOverviewLabel=0x7f050049;
+        public static final int statsOverviewBreakdown=0x7f05004c;
+        public static final int statsOverviewBreakdownLabel=0x7f05004b;
+        public static final int statsOverviewGeneral=0x7f05004a;
+        public static final int statsOverviewGeneralLabel=0x7f050049;
         public static final int statsOverviewLayout=0x7f050048;
         public static final int tabMode=0x7f050003;
         public static final int useLogo=0x7f050004;

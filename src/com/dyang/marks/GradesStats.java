@@ -2,6 +2,8 @@ package com.dyang.marks;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.ActivityGroup;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,6 +29,7 @@ public class GradesStats extends SherlockActivity implements ActionBar.OnNavigat
 	private RelativeLayout gradesStatsRoot;
 	private TabHost tabHost;
 	private int course_id;
+	private boolean initialized = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class GradesStats extends SherlockActivity implements ActionBar.OnNavigat
 		TabSpec overviewSpec = tabHost.newTabSpec("Overview");
 		overviewSpec.setIndicator("Overview");
 		Intent overviewIntent = new Intent(this, StatsOverview.class);
+		overviewIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		overviewSpec.setContent(overviewIntent);
 		tabHost.addTab(overviewSpec);
 
@@ -77,32 +81,21 @@ public class GradesStats extends SherlockActivity implements ActionBar.OnNavigat
 				LayoutParams.WRAP_CONTENT);
 		lp.setMargins(0, 3, 0, 0);
 		gradesStatsRoot.addView(tabHost, lp);
-		
-		Button button = new Button(this);
-		button.setText("test");
-		button.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent();
-				i.setAction("com.dyang.marks.NIF");
-				sendBroadcast(i);
-			}
-			
-		});
-		gradesStatsRoot.addView(button);
 	}
 
 	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 		setCourse_id(courseList.get(itemPosition).getId());
-		//refreshOverview();
+		if (initialized)
+			refreshOverview();
+		else
+			initialized = true;
 		return true;
 	}
 
 	private void refreshOverview() {
 		Intent i = new Intent();
-		i.setAction("test.intent.action.LOC.TEST");
+		i.setAction("com.dyang.marks.RELOAD_TAB");
 		sendBroadcast(i);
 	}
 

@@ -7,11 +7,23 @@
     android:orientation="vertical" >
 
     <include
-        android:id="@+id/statsOverviewLabel"
+        android:id="@+id/statsOverviewGeneralLabel"
         layout="@layout/top_bracket" />
 
     <LinearLayout
-        android:id="@+id/statsOverview"
+        android:id="@+id/statsOverviewGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_shape_bottom"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <include
+        android:id="@+id/statsOverviewBreakdownLabel"
+        layout="@layout/top_bracket" />
+
+    <LinearLayout
+        android:id="@+id/statsOverviewBreakdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_shape_bottom"
