@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.dyang.marks.Obj.CategoryObj;
+import com.dyang.marks.Obj.GradeObj;
 import com.dyang.marks.utils.DatabaseHandler;
 import com.dyang.marks.utils.PieChart;
 import com.dyang.marks.utils.PieItem;
 
 import android.app.Activity;
-import android.app.TabActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +67,7 @@ public class StatsOverview extends Activity {
 		filter.addAction("com.dyang.marks.RELOAD_TAB");
 		receiver = new BroadcastReceiver() {
 			@Override
-			public void onReceive(Context context, Intent intent) {
+			public void onReceive(final Context context, final Intent intent) {
 				statsOverviewBreakdown.getChildAt(0).startAnimation(
 						AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout));
 				statsOverviewBreakdown.getChildAt(0).setVisibility(View.INVISIBLE);
@@ -81,7 +81,7 @@ public class StatsOverview extends Activity {
 
 	public void populateGeneralInfo() {
 		statsOverviewGeneral.removeAllViews();
-		
+
 		DatabaseHandler db = new DatabaseHandler(this);
 		TableLayout tableLayout = new TableLayout(this);
 
@@ -94,27 +94,54 @@ public class StatsOverview extends Activity {
 		TextView courseCode = new TextView(this);
 		courseCodeLabel.setText(R.string.courseCode);
 		courseCode.setText(db.getCourse(parentActivity.getCourse_id()).getCode());
-		
+
+		TextView courseAverageLabel = new TextView(this);
+		TextView courseAverage = new TextView(this);
+		courseAverageLabel.setText(R.string.courseAverage);
+
+		List<CategoryObj> categoryObj = db.getAllCategories(parentActivity.getCourse_id());
+
+		double cumalativeAvg = 0;
+		double sectionAvg;
+		List<GradeObj> gradeObj;
+		for (int i = 0; i < categoryObj.size(); i++) {
+			gradeObj = db.getAllGrades(parentActivity.getCourse_id(), categoryObj.get(i).getId());
+			sectionAvg = 0;
+			for (int j = 0; j < gradeObj.size(); j++) {
+				sectionAvg += (gradeObj.get(j).getGrade() * categoryObj.get(i).getWeight() / 100);
+			}
+			sectionAvg /= gradeObj.size();
+			cumalativeAvg += sectionAvg;
+		}
+		courseAverage.setText(cumalativeAvg + "%");
+
 		courseNameLabel.setTextSize(16);
 		courseCodeLabel.setTextSize(16);
 		courseName.setTextSize(16);
 		courseCode.setTextSize(16);
-		
+		courseAverageLabel.setTextSize(16);
+		courseAverage.setTextSize(16);
+
 		courseNameLabel.setTypeface(null, Typeface.BOLD);
 		courseCodeLabel.setTypeface(null, Typeface.BOLD);
+		courseAverageLabel.setTypeface(null, Typeface.BOLD);
 
 		TableRow courseNameRow = new TableRow(this);
 		TableRow courseCodeRow = new TableRow(this);
+		TableRow courseAverageRow = new TableRow(this);
 
 		courseNameRow.addView(courseNameLabel);
 		courseNameRow.addView(courseName);
 		courseCodeRow.addView(courseCodeLabel);
 		courseCodeRow.addView(courseCode);
+		courseAverageRow.addView(courseAverageLabel);
+		courseAverageRow.addView(courseAverage);
 
 		tableLayout.addView(courseNameRow);
 		tableLayout.addView(courseCodeRow);
+		tableLayout.addView(courseAverageRow);
 		tableLayout.setStretchAllColumns(true);
-		
+
 		statsOverviewGeneral.addView(tableLayout);
 		db.close();
 	}

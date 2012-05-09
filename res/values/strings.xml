@@ -41,11 +41,14 @@
     <string name="placeholder">Placeholder</string>
     <string name="editSelectedCourse">Edit Selected Course</string>
     <string name="deleteSelectedCourse">Delete Selected Course</string>
+    <string name="overview">Overview</string>
+    <string name="tool">Tool</string>
     <string name="gradesStatistics">Grades Statistics</string>
-    <string-array name="listTemp">
-        <item>Hi1 Hi1 Hi1 Hi1</item>
-        <item>Hi2</item>
-        <item>Hi3</item>
-    </string-array>
+    <string name="courseAverage">Course Average</string>
+    <string name="markNeeded">Reverse Mark Calculator</string>
+    <string name="markNeededContent">This function calculates the mark needed on a specified exam to pass the course.\n\nFor example, given that the only unknown mark is the final exam, this would calculate the final exam mark needed to pass the course.\n</string>
+    <string name="launch">Launch</string>
+    <string name="unknownMark">Unknown Mark to be Used</string>
+    <string name="passingMark">Passing Mark</string>
 
 </resources>

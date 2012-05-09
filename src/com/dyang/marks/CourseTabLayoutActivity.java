@@ -1,7 +1,6 @@
 package com.dyang.marks;
 
 import com.dyang.marks.Obj.CourseObj;
-import com.dyang.marks.utils.DatabaseHandler;
 
 import android.app.Activity;
 import android.app.TabActivity;

@@ -12,9 +12,6 @@ public final class R {
         public static final int fadein=0x7f040000;
         public static final int fadeout=0x7f040001;
     }
-    public static final class array {
-        public static final int listTemp=0x7f0c0000;
-    }
     public static final class attr {
         /**  Specified if we are forcing an action item overflow menu. 
          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
@@ -614,10 +611,13 @@ containing a value of this type.
         public static final int abs__bright_foreground_inverse_holo_dark=0x7f070006;
         public static final int abs__bright_foreground_inverse_holo_light=0x7f070007;
         public static final int abs__holo_blue_light=0x7f070008;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f070018;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f070019;
-        public static final int abs__primary_text_holo_dark=0x7f07001a;
-        public static final int abs__primary_text_holo_light=0x7f07001b;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f07001a;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f07001b;
+        public static final int abs__primary_text_holo_dark=0x7f07001c;
+        public static final int abs__primary_text_holo_light=0x7f07001d;
+        public static final int tab_active=0x7f070018;
+        public static final int tab_inactive=0x7f070019;
+        public static final int tab_text=0x7f07001e;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -858,7 +858,7 @@ containing a value of this type.
         public static final int abs__titleDivider=0x7f05001c;
         public static final int abs__up=0x7f05000b;
         public static final int addMore=0x7f050037;
-        public static final int button1=0x7f05004d;
+        public static final int button1=0x7f05004f;
         public static final int categorySpinner=0x7f050031;
         public static final int courseSpinner=0x7f050030;
         public static final int disableHome=0x7f050009;
@@ -877,8 +877,8 @@ containing a value of this type.
         public static final int myText1=0x7f050047;
         public static final int next=0x7f05002b;
         public static final int normal=0x7f050001;
-        public static final int preferences1=0x7f05004e;
-        public static final int preferences2=0x7f05004f;
+        public static final int preferences1=0x7f050050;
+        public static final int preferences2=0x7f050051;
         public static final int setupButton=0x7f050044;
         public static final int setupLabel=0x7f050046;
         public static final int setupTextTitle=0x7f05002a;
@@ -887,11 +887,13 @@ containing a value of this type.
         public static final int showTitle=0x7f050007;
         public static final int spinnerLabel=0x7f05002e;
         public static final int spinnerLayout=0x7f05002d;
-        public static final int statsOverviewBreakdown=0x7f05004c;
-        public static final int statsOverviewBreakdownLabel=0x7f05004b;
-        public static final int statsOverviewGeneral=0x7f05004a;
-        public static final int statsOverviewGeneralLabel=0x7f050049;
-        public static final int statsOverviewLayout=0x7f050048;
+        public static final int statsAnalysisLayout=0x7f050048;
+        public static final int statsGradesLayout=0x7f050049;
+        public static final int statsOverviewBreakdown=0x7f05004e;
+        public static final int statsOverviewBreakdownLabel=0x7f05004d;
+        public static final int statsOverviewGeneral=0x7f05004c;
+        public static final int statsOverviewGeneralLabel=0x7f05004b;
+        public static final int statsOverviewLayout=0x7f05004a;
         public static final int tabMode=0x7f050003;
         public static final int useLogo=0x7f050004;
         public static final int wrap_content=0x7f050000;
@@ -920,23 +922,26 @@ containing a value of this type.
         public static final int abs__screen_action_bar_overlay=0x7f030011;
         public static final int abs__screen_simple=0x7f030012;
         public static final int abs__screen_simple_overlay_action_mode=0x7f030013;
-        public static final int course_tabhost=0x7f030014;
-        public static final int enter_courses=0x7f030015;
-        public static final int enter_grade=0x7f030016;
-        public static final int grades_row=0x7f030017;
-        public static final int grades_stats=0x7f030018;
-        public static final int list_item=0x7f030019;
-        public static final int list_navigation=0x7f03001a;
-        public static final int main_menu=0x7f03001b;
-        public static final int my_simple_spinner_dropdown_item=0x7f03001c;
-        public static final int sherlock_spinner_dropdown_item=0x7f03001d;
-        public static final int sherlock_spinner_item=0x7f03001e;
-        public static final int stats_overview=0x7f03001f;
-        public static final int top_bracket=0x7f030020;
-        public static final int welcome=0x7f030021;
+        public static final int category_box=0x7f030014;
+        public static final int course_tabhost=0x7f030015;
+        public static final int enter_courses=0x7f030016;
+        public static final int enter_grade=0x7f030017;
+        public static final int grades_row=0x7f030018;
+        public static final int grades_stats=0x7f030019;
+        public static final int list_item=0x7f03001a;
+        public static final int list_navigation=0x7f03001b;
+        public static final int main_menu=0x7f03001c;
+        public static final int my_simple_spinner_dropdown_item=0x7f03001d;
+        public static final int sherlock_spinner_dropdown_item=0x7f03001e;
+        public static final int sherlock_spinner_item=0x7f03001f;
+        public static final int stats_analysis=0x7f030020;
+        public static final int stats_grades=0x7f030021;
+        public static final int stats_overview=0x7f030022;
+        public static final int top_bracket=0x7f030023;
+        public static final int welcome=0x7f030024;
     }
     public static final class menu {
-        public static final int mainmenu=0x7f0d0000;
+        public static final int mainmenu=0x7f0c0000;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -978,6 +983,7 @@ containing a value of this type.
         public static final int complete=0x7f0a001b;
         public static final int countGPA=0x7f0a0014;
         public static final int course=0x7f0a000e;
+        public static final int courseAverage=0x7f0a0035;
         public static final int courseCategories=0x7f0a0013;
         public static final int courseCode=0x7f0a0010;
         public static final int courseInfo=0x7f0a0011;
@@ -992,12 +998,17 @@ containing a value of this type.
         public static final int finals=0x7f0a0024;
         public static final int grades=0x7f0a0029;
         public static final int gradesInfo=0x7f0a0012;
-        public static final int gradesStatistics=0x7f0a0032;
+        public static final int gradesStatistics=0x7f0a0034;
         public static final int highSchool=0x7f0a0018;
         public static final int labs=0x7f0a0025;
+        public static final int launch=0x7f0a0038;
+        public static final int markNeeded=0x7f0a0036;
+        public static final int markNeededContent=0x7f0a0037;
         public static final int midterms=0x7f0a0023;
         public static final int name=0x7f0a000d;
         public static final int next=0x7f0a001a;
+        public static final int overview=0x7f0a0032;
+        public static final int passingMark=0x7f0a003a;
         public static final int placeholder=0x7f0a002f;
         public static final int reset=0x7f0a002e;
         public static final int selectACategory=0x7f0a002c;
@@ -1006,8 +1017,10 @@ containing a value of this type.
         public static final int setupCourses=0x7f0a0016;
         public static final int setupName=0x7f0a0015;
         public static final int thirtypercent=0x7f0a0027;
+        public static final int tool=0x7f0a0033;
         public static final int university=0x7f0a0019;
         public static final int universitycollege=0x7f0a001d;
+        public static final int unknownMark=0x7f0a0039;
         public static final int weighting=0x7f0a0026;
         public static final int welcome=0x7f0a000a;
     }
