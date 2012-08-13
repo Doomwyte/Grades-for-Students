@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +28,7 @@ public class GradesStats extends SherlockActivity implements
 
     private List<CourseObj> courseList;
     private RelativeLayout gradesStatsRoot;
+    private LinearLayout gradesStatsCategoryLabel;
     private TabHost tabHost;
     private int course_id;
     private boolean initialized = false;
@@ -54,6 +56,7 @@ public class GradesStats extends SherlockActivity implements
 
         gradesStatsRoot = (RelativeLayout) findViewById(R.id.gradesStatsRoot);
         gradesStatsRoot.setBackgroundColor(Color.DKGRAY);
+        gradesStatsCategoryLabel = (LinearLayout) findViewById(R.id.gradesStatsCategoryLabel);
 
         tabHost = (TabHost) LayoutInflater.from(getBaseContext()).inflate(
                 R.layout.course_tabhost, null);
@@ -75,7 +78,7 @@ public class GradesStats extends SherlockActivity implements
         tabHost.addTab(gradesSpec);
 
         TabSpec analysisSpec = tabHost.newTabSpec("Analysis");
-        analysisSpec.setIndicator(getResources().getString(R.string.tool));
+        analysisSpec.setIndicator(getResources().getString(R.string.tools));
         Intent analysisIntent = new Intent(this, StatsAnalysis.class);
         analysisSpec.setContent(analysisIntent);
         tabHost.addTab(analysisSpec);
@@ -90,7 +93,14 @@ public class GradesStats extends SherlockActivity implements
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, 3, 0, 0);
+        lp.addRule(RelativeLayout.BELOW,
+                findViewById(R.id.gradesStatsCategoryLabel).getId());
+        tabHost.getTabWidget().setBackgroundResource(
+                R.drawable.custom_shape_bottom);
+        TextView generalStatsCategoryLabelText = (TextView) gradesStatsCategoryLabel
+                .getChildAt(0);
+        generalStatsCategoryLabelText.setText(R.string.selection);
+        generalStatsCategoryLabelText.setTextColor(Color.WHITE);
         gradesStatsRoot.addView(tabHost, lp);
     }
 
@@ -102,45 +112,6 @@ public class GradesStats extends SherlockActivity implements
         else
             initialized = true;
         return true;
-    }
-
-    public void launchReverseGradeCalc() {
-        gradesStatsRoot.removeAllViews();
-
-        LinearLayout reverseGradeLayout;
-        TextView label;
-        LinearLayout content;
-        
-        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.category_box, null);
-        label = (TextView) ((LinearLayout) reverseGradeLayout
-                .getChildAt(0)).getChildAt(0);
-        content = (LinearLayout) reverseGradeLayout.getChildAt(1);
-
-        DatabaseHandler db = new DatabaseHandler(this);
-        Spinner categorySpinner = new Spinner(this);
-        CategoryAdapter caAdapter = new CategoryAdapter(GradesStats.this,
-                android.R.layout.simple_spinner_item,
-                db.getAllCategories(getCourse_id()));
-        caAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(caAdapter);
-
-        label.setText(R.string.unknownMark);
-        label.setTextColor(Color.WHITE);
-        content.addView(categorySpinner);
-
-        gradesStatsRoot.addView(reverseGradeLayout,
-                new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-                        LayoutParams.WRAP_CONTENT));
-
-        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.category_box, null);
-        label = (TextView) ((LinearLayout) reverseGradeLayout
-                .getChildAt(0)).getChildAt(0);
-        content = (LinearLayout) reverseGradeLayout.getChildAt(1);
-        
-        db.close();
     }
 
     private void refreshOverview() {

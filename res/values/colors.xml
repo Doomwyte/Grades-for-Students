@@ -17,6 +17,6 @@
     <color name="Transparent">#00000000</color>
     <color name="DarkGray">#FF191919</color>
     <color name="tab_active">#ff000000</color>
-    <color name="tab_inactive">#ffffffff</color>
+    <color name="tab_inactive">#ff000000</color>
 
 </resources>

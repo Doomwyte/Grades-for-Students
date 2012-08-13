@@ -1,5 +1,11 @@
 package com.dyang.marks;
 
+import java.util.ArrayList;
+
+import com.dyang.marks.Obj.CategoryObj;
+import com.dyang.marks.adapters.CategoryAdapter;
+import com.dyang.marks.utils.DatabaseHandler;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,8 +16,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 public class StatsAnalysis extends Activity {
@@ -19,6 +31,8 @@ public class StatsAnalysis extends Activity {
     private GradesStats parentActivity;
     private LinearLayout root;
     private BroadcastReceiver receiver;
+    private DatabaseHandler db;
+    private Spinner categorySpinner;
 
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +76,7 @@ public class StatsAnalysis extends Activity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                parentActivity.launchReverseGradeCalc();
+                launchReverseGradeCalc();
             }
         });
 
@@ -74,5 +88,60 @@ public class StatsAnalysis extends Activity {
     protected final void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+    }
+    
+    public void launchReverseGradeCalc() {
+
+        root.removeAllViews();
+        
+        LinearLayout reverseGradeLayout;
+        TextView label;
+        LinearLayout content;
+
+        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
+                getBaseContext()).inflate(R.layout.category_box, null);
+        label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
+                .getChildAt(0);
+        content = (LinearLayout) reverseGradeLayout.getChildAt(1);
+
+        int course_id = parentActivity.getCourse_id();
+        
+        db = new DatabaseHandler(this);
+        categorySpinner = new Spinner(this);
+        CategoryAdapter caAdapter = new CategoryAdapter(this,
+                android.R.layout.simple_spinner_item,
+                db.getAllCategories(course_id));
+        caAdapter
+                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(caAdapter);
+        categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                    int arg2, long arg3) {
+                CategoryObj selectedCat = (CategoryObj) categorySpinner.getSelectedItem();
+                ArrayList<CategoryObj> catArray = new ArrayList<CategoryObj>();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+            
+        });
+
+        label.setText(R.string.unknownMark);
+        label.setTextColor(Color.WHITE);
+        content.addView(categorySpinner);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        root.addView(reverseGradeLayout, lp);
+
+        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
+                getBaseContext()).inflate(R.layout.category_box, null);
+        label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
+                .getChildAt(0);
+
+        db.close();
     }
 }
