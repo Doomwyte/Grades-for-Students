@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,6 +37,8 @@ public class GradesStats extends SherlockActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.grades_stats);
+        
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         DatabaseHandler db = new DatabaseHandler(this);
         courseList = db.getAllCourses();

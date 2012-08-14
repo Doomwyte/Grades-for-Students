@@ -51,5 +51,10 @@
     <string name="unknownMark">Unknown Mark To Be Calculated</string>
     <string name="passingMark">Passing Mark</string>
     <string name="selection">Selection</string>
+    <string name="passingMark">Passing Mark</string>
+    <string name="result">Result</string>
+    <string name="markRequired">Mark Required:</string>
+    <string name="alreadyPassed">Already Passed</string>
+    <string name="impossible">Not Possible</string>
 
 </resources>

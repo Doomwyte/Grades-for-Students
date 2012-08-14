@@ -24,6 +24,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -34,6 +36,12 @@ public class StatsAnalysis extends Activity {
     private BroadcastReceiver receiver;
     private DatabaseHandler db;
     private Spinner categorySpinner;
+    private TextView passingGradeDisplay;
+    private SeekBar passingGradeBar;
+    private TextView resultText;
+    private CategoryObj selectedCat;
+    private double result;
+    private double avg;
     private int course_id;
 
     public final void onCreate(final Bundle savedInstanceState) {
@@ -100,6 +108,10 @@ public class StatsAnalysis extends Activity {
         TextView label;
         LinearLayout content;
 
+        passingGradeBar = new SeekBar(this);
+        passingGradeBar.setProgress(50);
+        result = 0;
+
         reverseGradeLayout = (LinearLayout) LayoutInflater.from(
                 getBaseContext()).inflate(R.layout.category_box, null);
         label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
@@ -116,16 +128,17 @@ public class StatsAnalysis extends Activity {
         caAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(caAdapter);
+
         categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                     int arg2, long arg3) {
-                CategoryObj selectedCat = (CategoryObj) categorySpinner
-                        .getSelectedItem();
+                selectedCat = (CategoryObj) categorySpinner.getSelectedItem();
                 List<CategoryObj> catArray = db.getAllCategories(course_id);
                 List<GradeObj> gradeArray;
-                double avg = 0;
+                avg = 0;
+                result = 0;
                 for (int i = 0; i < catArray.size(); i++) {
                     if (catArray.get(i).getId() != selectedCat.getId()) {
                         gradeArray = db.getAllGrades(course_id, catArray.get(i)
@@ -135,10 +148,21 @@ public class StatsAnalysis extends Activity {
                             double getGrade = gradeArray.get(j).getGrade();
                             sum += getGrade;
                         }
-                        avg = avg+((sum/gradeArray.size())*catArray.get(i).getWeight()/100);
+                        avg = avg
+                                + ((sum / gradeArray.size())
+                                        * catArray.get(i).getWeight() / 100);
                     }
                 }
-                System.out.println();
+                result = (passingGradeBar.getProgress() - avg)
+                        / (selectedCat.getWeight() / 100);
+                if (!Double.isNaN(result))
+                    if (result > 100)
+                        resultText.setText(R.string.impossible);
+                    else if (result > 0)
+                        resultText.setText(getString(R.string.markRequired)
+                                + " " + Double.toString(result) + "%");
+                    else
+                        resultText.setText(R.string.alreadyPassed);
             }
 
             @Override
@@ -153,12 +177,72 @@ public class StatsAnalysis extends Activity {
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
         root.addView(reverseGradeLayout, lp);
 
         reverseGradeLayout = (LinearLayout) LayoutInflater.from(
                 getBaseContext()).inflate(R.layout.category_box, null);
         label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
                 .getChildAt(0);
+        content = (LinearLayout) reverseGradeLayout.getChildAt(1);
+
+        passingGradeDisplay = new TextView(this);
+        passingGradeDisplay.setText(getString(R.string.passingMark) + ": "
+                + passingGradeBar.getProgress() + "%");
+        passingGradeBar
+                .setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar,
+                            int progress, boolean fromUser) {
+                        passingGradeDisplay
+                                .setText(getString(R.string.passingMark) + ": "
+                                        + progress + "%");
+                        result = (passingGradeBar.getProgress() - avg)
+                                / (selectedCat.getWeight() / 100);
+                        if (!Double.isNaN(result))
+                            if (result > 100)
+                                resultText.setText(R.string.impossible);
+                            else if (result > 0)
+                                resultText
+                                        .setText(getString(R.string.markRequired)
+                                                + " "
+                                                + Double.toString(result)
+                                                + "%");
+                            else
+                                resultText.setText(R.string.alreadyPassed);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+
+                });
+
+        label.setText(R.string.passingMark);
+        label.setTextColor(Color.WHITE);
+        content.addView(passingGradeBar, lp);
+        content.addView(passingGradeDisplay, lp);
+
+        root.addView(reverseGradeLayout, lp);
+
+        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
+                getBaseContext()).inflate(R.layout.category_box, null);
+        label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
+                .getChildAt(0);
+        content = (LinearLayout) reverseGradeLayout.getChildAt(1);
+
+        label.setText(R.string.result);
+        label.setTextColor(Color.WHITE);
+
+        resultText = new TextView(this);
+        content.addView(resultText);
+
+        root.addView(reverseGradeLayout, lp);
 
         db.close();
     }

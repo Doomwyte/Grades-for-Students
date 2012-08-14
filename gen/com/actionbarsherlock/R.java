@@ -978,6 +978,7 @@ containing a value of this type.
         public static final int addMore=0x7f0a002a;
         public static final int addMoreCourses=0x7f0a001c;
         public static final int addRow=0x7f0a001e;
+        public static final int alreadyPassed=0x7f0a003e;
         public static final int app_name=0x7f0a000b;
         public static final int assignments=0x7f0a0022;
         public static final int clickToContinue=0x7f0a000c;
@@ -1001,10 +1002,12 @@ containing a value of this type.
         public static final int gradesInfo=0x7f0a0012;
         public static final int gradesStatistics=0x7f0a0034;
         public static final int highSchool=0x7f0a0018;
+        public static final int impossible=0x7f0a003f;
         public static final int labs=0x7f0a0025;
         public static final int launch=0x7f0a0038;
         public static final int markNeeded=0x7f0a0036;
         public static final int markNeededContent=0x7f0a0037;
+        public static final int markRequired=0x7f0a003d;
         public static final int midterms=0x7f0a0023;
         public static final int name=0x7f0a000d;
         public static final int next=0x7f0a001a;
@@ -1012,6 +1015,7 @@ containing a value of this type.
         public static final int passingMark=0x7f0a003a;
         public static final int placeholder=0x7f0a002f;
         public static final int reset=0x7f0a002e;
+        public static final int result=0x7f0a003c;
         public static final int selectACategory=0x7f0a002c;
         public static final int selectACourse=0x7f0a002b;
         public static final int selection=0x7f0a003b;
