@@ -1,8 +1,10 @@
 package com.dyang.marks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.dyang.marks.Obj.CategoryObj;
+import com.dyang.marks.Obj.GradeObj;
 import com.dyang.marks.adapters.CategoryAdapter;
 import com.dyang.marks.utils.DatabaseHandler;
 
@@ -23,7 +25,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TabHost;
 import android.widget.TextView;
 
 public class StatsAnalysis extends Activity {
@@ -33,6 +34,7 @@ public class StatsAnalysis extends Activity {
     private BroadcastReceiver receiver;
     private DatabaseHandler db;
     private Spinner categorySpinner;
+    private int course_id;
 
     public final void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,11 +91,11 @@ public class StatsAnalysis extends Activity {
         super.onDestroy();
         unregisterReceiver(receiver);
     }
-    
+
     public void launchReverseGradeCalc() {
 
         root.removeAllViews();
-        
+
         LinearLayout reverseGradeLayout;
         TextView label;
         LinearLayout content;
@@ -104,8 +106,8 @@ public class StatsAnalysis extends Activity {
                 .getChildAt(0);
         content = (LinearLayout) reverseGradeLayout.getChildAt(1);
 
-        int course_id = parentActivity.getCourse_id();
-        
+        course_id = parentActivity.getCourse_id();
+
         db = new DatabaseHandler(this);
         categorySpinner = new Spinner(this);
         CategoryAdapter caAdapter = new CategoryAdapter(this,
@@ -114,19 +116,35 @@ public class StatsAnalysis extends Activity {
         caAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(caAdapter);
-        categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+        categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                     int arg2, long arg3) {
-                CategoryObj selectedCat = (CategoryObj) categorySpinner.getSelectedItem();
-                ArrayList<CategoryObj> catArray = new ArrayList<CategoryObj>();
+                CategoryObj selectedCat = (CategoryObj) categorySpinner
+                        .getSelectedItem();
+                List<CategoryObj> catArray = db.getAllCategories(course_id);
+                List<GradeObj> gradeArray;
+                double avg = 0;
+                for (int i = 0; i < catArray.size(); i++) {
+                    if (catArray.get(i).getId() != selectedCat.getId()) {
+                        gradeArray = db.getAllGrades(course_id, catArray.get(i)
+                                .getId());
+                        double sum = 0;
+                        for (int j = 0; j < gradeArray.size(); j++) {
+                            double getGrade = gradeArray.get(j).getGrade();
+                            sum += getGrade;
+                        }
+                        avg = avg+((sum/gradeArray.size())*catArray.get(i).getWeight()/100);
+                    }
+                }
+                System.out.println();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
-            
+
         });
 
         label.setText(R.string.unknownMark);

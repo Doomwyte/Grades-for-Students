@@ -460,16 +460,16 @@ public class EnterGrades extends SherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        SubMenu subMenu1 = menu.addSubMenu("Action Item");
-        subMenu1.add(R.string.editSelectedCourse);
-        subMenu1.add(R.string.deleteSelectedCourse);
+        SubMenu topDropdown = menu.addSubMenu("Action Item");
+        topDropdown.add(R.string.editSelectedCourse);
+        topDropdown.add(R.string.deleteSelectedCourse);
 
-        MenuItem subMenu1Item = subMenu1.getItem();
-        subMenu1Item.setIcon(R.drawable.ic_action_overflow);
-        subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+        MenuItem topDropdownItem = topDropdown.getItem();
+        topDropdownItem.setIcon(R.drawable.ic_action_overflow);
+        topDropdownItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
                 | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-        subMenu1.getItem(0).setOnMenuItemClickListener(
+        topDropdown.getItem(0).setOnMenuItemClickListener(
                 new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -484,7 +484,7 @@ public class EnterGrades extends SherlockActivity {
                     }
                 });
 
-        subMenu1.getItem(1).setOnMenuItemClickListener(
+        topDropdown.getItem(1).setOnMenuItemClickListener(
                 new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
