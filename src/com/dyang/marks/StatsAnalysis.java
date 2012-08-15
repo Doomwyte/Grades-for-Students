@@ -124,7 +124,7 @@ public class StatsAnalysis extends Activity {
         categorySpinner = new Spinner(this);
         CategoryAdapter caAdapter = new CategoryAdapter(this,
                 android.R.layout.simple_spinner_item,
-                db.getAllCategories(course_id));
+                db.getAllEmptyCategories(course_id));
         caAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(caAdapter);
@@ -155,7 +155,7 @@ public class StatsAnalysis extends Activity {
                 }
                 result = (passingGradeBar.getProgress() - avg)
                         / (selectedCat.getWeight() / 100);
-                if (!Double.isNaN(result))
+                if (!Double.isNaN(result)) {
                     if (result > 100)
                         resultText.setText(R.string.impossible);
                     else if (result > 0)
@@ -163,6 +163,7 @@ public class StatsAnalysis extends Activity {
                                 + " " + Double.toString(result) + "%");
                     else
                         resultText.setText(R.string.alreadyPassed);
+                }
             }
 
             @Override
@@ -187,7 +188,7 @@ public class StatsAnalysis extends Activity {
         content = (LinearLayout) reverseGradeLayout.getChildAt(1);
 
         passingGradeDisplay = new TextView(this);
-        passingGradeDisplay.setText(getString(R.string.passingMark) + ": "
+        passingGradeDisplay.setText(getString(R.string.desiredMark) + ": "
                 + passingGradeBar.getProgress() + "%");
         passingGradeBar
                 .setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -200,7 +201,7 @@ public class StatsAnalysis extends Activity {
                                         + progress + "%");
                         result = (passingGradeBar.getProgress() - avg)
                                 / (selectedCat.getWeight() / 100);
-                        if (!Double.isNaN(result))
+                        if (!Double.isNaN(result)) {
                             if (result > 100)
                                 resultText.setText(R.string.impossible);
                             else if (result > 0)
@@ -211,6 +212,7 @@ public class StatsAnalysis extends Activity {
                                                 + "%");
                             else
                                 resultText.setText(R.string.alreadyPassed);
+                        }
                     }
 
                     @Override

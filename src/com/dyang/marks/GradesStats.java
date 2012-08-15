@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.dyang.marks.Obj.CourseObj;
-import com.dyang.marks.adapters.CategoryAdapter;
 import com.dyang.marks.adapters.CourseAdapter;
 import com.dyang.marks.utils.DatabaseHandler;
 
