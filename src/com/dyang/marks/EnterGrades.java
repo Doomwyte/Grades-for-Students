@@ -417,7 +417,7 @@ public class EnterGrades extends SherlockActivity {
         alert.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
+                        // Cancelled.
                     }
                 });
 
