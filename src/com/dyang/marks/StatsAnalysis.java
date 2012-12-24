@@ -3,6 +3,7 @@ package com.dyang.marks;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.GradeObj;
 import com.dyang.marks.adapters.CategoryAdapter;
@@ -17,6 +18,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -29,7 +31,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class StatsAnalysis extends Activity {
+public class StatsAnalysis extends SherlockFragment {
 
     private GradesStats parentActivity;
     private LinearLayout root;
@@ -44,12 +46,16 @@ public class StatsAnalysis extends Activity {
     private double avg;
     private int course_id;
 
-    public final void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.stats_analysis);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-        parentActivity = (GradesStats) getParent();
-        root = (LinearLayout) findViewById(R.id.statsAnalysisLayout);
+        View fragView = inflater.inflate(R.layout.stats_analysis, container,
+                false);
+
+        parentActivity = (GradesStats) getActivity();
+        root = (LinearLayout) fragView.findViewById(R.id.statsAnalysisLayout);
 
         // Generate Content
         populateInfo();
@@ -57,18 +63,21 @@ public class StatsAnalysis extends Activity {
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.dyang.marks.RELOAD_TAB");
         receiver = new BroadcastReceiver() {
+
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 populateInfo();
             }
         };
-        registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);
+
+        return fragView;
     }
 
     public final void populateInfo() {
         // MARK NEEDED BOX
         LinearLayout markNeededLayout = (LinearLayout) LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.category_box, null);
+                getActivity()).inflate(R.layout.category_box, null);
         TextView label = (TextView) ((LinearLayout) markNeededLayout
                 .getChildAt(0)).getChildAt(0);
         LinearLayout content = (LinearLayout) markNeededLayout.getChildAt(1);
@@ -76,11 +85,12 @@ public class StatsAnalysis extends Activity {
         label.setText(R.string.markNeeded);
         label.setTextColor(Color.WHITE);
 
-        TextView contentText = new TextView(this);
+        TextView contentText = new TextView(getActivity());
         contentText.setText(R.string.markNeededContent);
         content.addView(contentText);
 
-        Button button = new Button(this, null, android.R.attr.buttonStyleSmall);
+        Button button = new Button(getActivity(), null,
+                android.R.attr.buttonStyleSmall);
         button.setText(R.string.launch);
 
         button.setOnClickListener(new OnClickListener() {
@@ -94,11 +104,10 @@ public class StatsAnalysis extends Activity {
         root.addView(markNeededLayout);
     }
 
-    @Override
-    protected final void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
-    }
+    /*
+     * @Override protected final void onDestroy() { super.onDestroy();
+     * unregisterReceiver(receiver); }
+     */
 
     public void launchReverseGradeCalc() {
 
@@ -108,21 +117,21 @@ public class StatsAnalysis extends Activity {
         TextView label;
         LinearLayout content;
 
-        passingGradeBar = new SeekBar(this);
+        passingGradeBar = new SeekBar(getActivity());
         passingGradeBar.setProgress(50);
         result = 0;
 
-        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.category_box, null);
+        reverseGradeLayout = (LinearLayout) LayoutInflater.from(getActivity())
+                .inflate(R.layout.category_box, null);
         label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
                 .getChildAt(0);
         content = (LinearLayout) reverseGradeLayout.getChildAt(1);
 
         course_id = parentActivity.getCourse_id();
 
-        db = new DatabaseHandler(this);
-        categorySpinner = new Spinner(this);
-        CategoryAdapter caAdapter = new CategoryAdapter(this,
+        db = new DatabaseHandler(getActivity());
+        categorySpinner = new Spinner(getActivity());
+        CategoryAdapter caAdapter = new CategoryAdapter(getActivity(),
                 android.R.layout.simple_spinner_item,
                 db.getAllEmptyCategories(course_id));
         caAdapter
@@ -181,13 +190,13 @@ public class StatsAnalysis extends Activity {
 
         root.addView(reverseGradeLayout, lp);
 
-        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.category_box, null);
+        reverseGradeLayout = (LinearLayout) LayoutInflater.from(getActivity())
+                .inflate(R.layout.category_box, null);
         label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
                 .getChildAt(0);
         content = (LinearLayout) reverseGradeLayout.getChildAt(1);
 
-        passingGradeDisplay = new TextView(this);
+        passingGradeDisplay = new TextView(getActivity());
         passingGradeDisplay.setText(getString(R.string.desiredMark) + ": "
                 + passingGradeBar.getProgress() + "%");
         passingGradeBar
@@ -232,8 +241,8 @@ public class StatsAnalysis extends Activity {
 
         root.addView(reverseGradeLayout, lp);
 
-        reverseGradeLayout = (LinearLayout) LayoutInflater.from(
-                getBaseContext()).inflate(R.layout.category_box, null);
+        reverseGradeLayout = (LinearLayout) LayoutInflater.from(getActivity())
+                .inflate(R.layout.category_box, null);
         label = (TextView) ((LinearLayout) reverseGradeLayout.getChildAt(0))
                 .getChildAt(0);
         content = (LinearLayout) reverseGradeLayout.getChildAt(1);
@@ -241,7 +250,7 @@ public class StatsAnalysis extends Activity {
         label.setText(R.string.result);
         label.setTextColor(Color.WHITE);
 
-        resultText = new TextView(this);
+        resultText = new TextView(getActivity());
         content.addView(resultText);
 
         root.addView(reverseGradeLayout, lp);

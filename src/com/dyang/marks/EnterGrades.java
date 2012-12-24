@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EnterGrades extends SherlockActivity {
 
@@ -99,7 +100,7 @@ public class EnterGrades extends SherlockActivity {
 
         if (allCourses.size() == 0) {
             Intent myIntent = new Intent(EnterGrades.this,
-                    CourseTabLayoutActivity.class);
+                    CourseFragmentActivity.class);
             EnterGrades.this.startActivity(myIntent);
         }
 
@@ -473,8 +474,13 @@ public class EnterGrades extends SherlockActivity {
                 new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        if(courseSpinner.getSelectedItemPosition()==0){
+                            Toast toast = Toast.makeText(EnterGrades.this, R.string.selectCourse, 10);
+                            toast.show();
+                            return false;
+                        }
                         Intent intent = new Intent(EnterGrades.this,
-                                CourseTabLayoutActivity.class);
+                                CourseFragmentActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putInt("editMode", ((CourseObj) courseSpinner
                                 .getSelectedItem()).getId());
@@ -488,6 +494,11 @@ public class EnterGrades extends SherlockActivity {
                 new OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        if(courseSpinner.getSelectedItemPosition()==0){
+                            Toast toast = Toast.makeText(EnterGrades.this, R.string.selectCourse, 10);
+                            toast.show();
+                            return false;
+                        }
                         final CourseObj courseToDelete = (CourseObj) courseSpinner
                                 .getSelectedItem();
                         AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -526,7 +537,7 @@ public class EnterGrades extends SherlockActivity {
                         return false;
                     }
                 });
-
+        
         return super.onCreateOptionsMenu(menu);
     }
 

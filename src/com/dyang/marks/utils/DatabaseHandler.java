@@ -12,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -82,6 +83,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(courses_table, null, values);
+        
+        Log.d("DANNYDEBUG", course.getId() +" "+course.getName()+" "+course.getCode()+" "+course.getCountAsGpa());
+        
         db.close(); // Closing database connection
     }
 

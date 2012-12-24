@@ -31,7 +31,7 @@
     <string name="labs">Labs</string>
     <string name="weighting">Weighting (%)</string>
     <string name="thirtypercent">ie. 30</string>
-    <string name="enterGrades">Enter Grades</string>
+    <string name="enterGrades">Manage Grades</string>
     <string name="grades">Grades</string>
     <string name="addMore">Add More</string>
     <string name="selectACourse">Select a course</string>
@@ -57,5 +57,9 @@
     <string name="alreadyPassed">Already Passed</string>
     <string name="impossible">Not Possible</string>
     <string name="settings">Settings</string>
-
+    <string name="back">Back</string>
+    <string name="selectCourse">Please select a course first</string>
+    <string name="analysis">Analysis</string>
+    <string name="overview">Overview</string>
+    <string name="addCourses">Add Courses</string>
 </resources>

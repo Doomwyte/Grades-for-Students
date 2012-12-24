@@ -2,6 +2,7 @@ package com.dyang.marks;
 
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.GradeObj;
 import com.dyang.marks.utils.DatabaseHandler;
@@ -17,24 +18,30 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class StatsGrades extends Activity {
+public class StatsGrades extends SherlockFragment {
 
     private GradesStats parentActivity;
     private LinearLayout root;
     private BroadcastReceiver receiver;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.stats_grades);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-        parentActivity = (GradesStats) getParent();
-        root = (LinearLayout) findViewById(R.id.statsGradesLayout);
+        View fragView = inflater.inflate(R.layout.stats_grades, container,
+                false);
+
+
+        parentActivity = (GradesStats) getActivity();
+        root = (LinearLayout) fragView.findViewById(R.id.statsGradesLayout);
 
         // Generate Content
         populateInfo();
@@ -47,18 +54,20 @@ public class StatsGrades extends Activity {
                 populateInfo();
             }
         };
-        registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);
+
+        return fragView;
     }
 
     public void populateInfo() {
         root.startAnimation(AnimationUtils.loadAnimation(
-                getApplicationContext(), R.anim.fadeout));
+                getActivity(), R.anim.fadeout));
         root.setVisibility(View.INVISIBLE);
         root.removeAllViews();
 
         int course_id = parentActivity.getCourse_id();
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        DatabaseHandler db = new DatabaseHandler(getActivity());
         List<CategoryObj> categoryObj = db.getAllCategories(course_id);
 
         LinearLayout categoryBox;
@@ -67,7 +76,7 @@ public class StatsGrades extends Activity {
         TableLayout tl;
 
         for (int i = 0; i < categoryObj.size(); i++) {
-            categoryBox = (LinearLayout) LayoutInflater.from(getBaseContext())
+            categoryBox = (LinearLayout) LayoutInflater.from(getActivity())
                     .inflate(R.layout.category_box, null);
             label = (TextView) ((LinearLayout) categoryBox.getChildAt(0))
                     .getChildAt(0);
@@ -79,15 +88,15 @@ public class StatsGrades extends Activity {
             List<GradeObj> gradeObj = db.getAllGrades(course_id, categoryObj
                     .get(i).getId());
 
-            tl = new TableLayout(this);
+            tl = new TableLayout(getActivity());
             TableRow tr;
             TextView gradesLabel;
             TextView grades;
 
             for (int j = 0; j < gradeObj.size(); j++) {
-                gradesLabel = new TextView(this);
-                grades = new TextView(this);
-                tr = new TableRow(this);
+                gradesLabel = new TextView(getActivity());
+                grades = new TextView(getActivity());
+                tr = new TableRow(getActivity());
 
                 gradesLabel.setText(gradeObj.get(j).getGrade_name());
                 gradesLabel.setTypeface(null, Typeface.BOLD);
@@ -107,16 +116,16 @@ public class StatsGrades extends Activity {
 
             root.addView(categoryBox);
             root.startAnimation(AnimationUtils.loadAnimation(
-                    getApplicationContext(), R.anim.fadein));
+                    getActivity(), R.anim.fadein));
             root.setVisibility(View.VISIBLE);
 
             db.close();
         }
     }
 
-    @Override
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-    }
+    }*/
 }

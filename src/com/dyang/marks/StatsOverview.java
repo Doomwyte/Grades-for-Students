@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.dyang.marks.Obj.CategoryObj;
 import com.dyang.marks.Obj.GradeObj;
 import com.dyang.marks.utils.DatabaseHandler;
@@ -21,35 +22,46 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class StatsOverview extends Activity {
+public class StatsOverview extends SherlockFragment {
 
     private LinearLayout statsOverviewGeneralLabel;
     private LinearLayout statsOverviewGeneral;
     private LinearLayout statsOverviewBreakdownLabel;
     private LinearLayout statsOverviewBreakdown;
     private List<CategoryObj> categoryObjs;
-    private BroadcastReceiver receiver;
     private GradesStats parentActivity;
+    private View fragView;
+    private BroadcastReceiver receiver;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.stats_overview);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-        parentActivity = (GradesStats) getParent();
-        statsOverviewGeneralLabel = (LinearLayout) findViewById(R.id.statsOverviewGeneralLabel);
-        statsOverviewGeneral = (LinearLayout) findViewById(R.id.statsOverviewGeneral);
-        statsOverviewBreakdownLabel = (LinearLayout) findViewById(R.id.statsOverviewBreakdownLabel);
-        statsOverviewBreakdown = (LinearLayout) findViewById(R.id.statsOverviewBreakdown);
+        fragView = inflater.inflate(R.layout.stats_overview, container, false);
+
+        parentActivity = (GradesStats) getActivity();
+        statsOverviewGeneralLabel = (LinearLayout) fragView
+                .findViewById(R.id.statsOverviewGeneralLabel);
+        statsOverviewGeneral = (LinearLayout) fragView
+                .findViewById(R.id.statsOverviewGeneral);
+        statsOverviewBreakdownLabel = (LinearLayout) fragView
+                .findViewById(R.id.statsOverviewBreakdownLabel);
+        statsOverviewBreakdown = (LinearLayout) fragView
+                .findViewById(R.id.statsOverviewBreakdown);
         statsOverviewGeneral.setGravity(Gravity.CENTER_HORIZONTAL);
         statsOverviewBreakdown.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -72,7 +84,7 @@ public class StatsOverview extends Activity {
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 statsOverviewBreakdown.getChildAt(0).startAnimation(
-                        AnimationUtils.loadAnimation(getApplicationContext(),
+                        AnimationUtils.loadAnimation(context,
                                 R.anim.fadeout));
                 statsOverviewBreakdown.getChildAt(0).setVisibility(
                         View.INVISIBLE);
@@ -81,29 +93,32 @@ public class StatsOverview extends Activity {
                 generateGraph();
             }
         };
-        registerReceiver(receiver, filter);
+
+        getActivity().registerReceiver(receiver, filter);
+
+        return fragView;
     }
 
     public void populateGeneralInfo() {
         statsOverviewGeneral.removeAllViews();
 
-        DatabaseHandler db = new DatabaseHandler(this);
-        TableLayout tableLayout = new TableLayout(this);
+        DatabaseHandler db = new DatabaseHandler(getActivity());
+        TableLayout tableLayout = new TableLayout(getActivity());
 
-        TextView courseNameLabel = new TextView(this);
-        TextView courseName = new TextView(this);
+        TextView courseNameLabel = new TextView(getActivity());
+        TextView courseName = new TextView(getActivity());
         courseNameLabel.setText(R.string.courseName);
         courseName.setText(db.getCourse(parentActivity.getCourse_id())
                 .getName());
 
-        TextView courseCodeLabel = new TextView(this);
-        TextView courseCode = new TextView(this);
+        TextView courseCodeLabel = new TextView(getActivity());
+        TextView courseCode = new TextView(getActivity());
         courseCodeLabel.setText(R.string.courseCode);
         courseCode.setText(db.getCourse(parentActivity.getCourse_id())
                 .getCode());
 
-        TextView courseAverageLabel = new TextView(this);
-        TextView courseAverage = new TextView(this);
+        TextView courseAverageLabel = new TextView(getActivity());
+        TextView courseAverage = new TextView(getActivity());
         courseAverageLabel.setText(R.string.courseAverage);
 
         List<CategoryObj> categoryObj = db.getAllCategories(parentActivity
@@ -138,9 +153,9 @@ public class StatsOverview extends Activity {
         courseCodeLabel.setTypeface(null, Typeface.BOLD);
         courseAverageLabel.setTypeface(null, Typeface.BOLD);
 
-        TableRow courseNameRow = new TableRow(this);
-        TableRow courseCodeRow = new TableRow(this);
-        TableRow courseAverageRow = new TableRow(this);
+        TableRow courseNameRow = new TableRow(getActivity());
+        TableRow courseCodeRow = new TableRow(getActivity());
+        TableRow courseAverageRow = new TableRow(getActivity());
 
         courseNameRow.addView(courseNameLabel);
         courseNameRow.addView(courseName);
@@ -164,7 +179,7 @@ public class StatsOverview extends Activity {
         List<PieItem> pieData = new ArrayList<PieItem>();
         List<TextView> legend = new ArrayList<TextView>();
 
-        DatabaseHandler db = new DatabaseHandler(this);
+        DatabaseHandler db = new DatabaseHandler(getActivity());
         categoryObjs = db.getAllCategories(parentActivity.getCourse_id());
         db.close();
 
@@ -179,7 +194,7 @@ public class StatsOverview extends Activity {
             item.Color = catColor;
             pieData.add(item);
 
-            tv = new TextView(this);
+            tv = new TextView(getActivity());
             tv.setText(catName);
             tv.setTextColor(catColor);
             legend.add(tv);
@@ -188,7 +203,7 @@ public class StatsOverview extends Activity {
         int size = 300;
         int bgColor = 0xEEEEEEEE;
 
-        PieChart pieChartView = new PieChart(this);
+        PieChart pieChartView = new PieChart(getActivity());
         pieChartView.setLayoutParams(new LayoutParams(size, size));
         pieChartView.setGeometry(size, size, 5, 5, 5, 5);
         pieChartView.setSkinParams(bgColor);
@@ -199,22 +214,16 @@ public class StatsOverview extends Activity {
                 Bitmap.Config.RGB_565);
         pieChartView.draw(new Canvas(mBackgroundImage));
 
-        ImageView mImageView = new ImageView(this);
+        ImageView mImageView = new ImageView(getActivity());
         mImageView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT));
         mImageView.setBackgroundColor(bgColor);
         mImageView.setImageBitmap(mBackgroundImage);
         mImageView.setVisibility(View.INVISIBLE);
         statsOverviewBreakdown.addView(mImageView);
-        mImageView.startAnimation(AnimationUtils.loadAnimation(
-                getApplicationContext(), R.anim.fadein));
+        mImageView.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                R.anim.fadein));
         mImageView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
     }
 
 }
